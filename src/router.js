@@ -22,14 +22,4 @@ const router = (request, response) => {
     handlers.public(); // some arguments probably needed to get the file they're requesting
   }
 
-
-  // Handlers
-  // Home
-  // Search
-  // Request item
-  // Add item
-  // Public
-  //   - this will include css, js, all that shit
-
-
 }
