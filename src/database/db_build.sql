@@ -17,7 +17,7 @@ CREATE TABLE items (
     id SERIAL PRIMARY KEY,
     name VARCHAR(80) NOT NULL,
     description TEXT,
-    lender_id INTEGER REFERENCES users (id) NOT NULL
+    lender_id INTEGER REFERENCES users(id) NOT NULL
 );
 
 INSERT INTO items (name, description, lender_id) VALUES 
@@ -26,16 +26,16 @@ INSERT INTO items (name, description, lender_id) VALUES
 
 CREATE TABLE loans (
     id SERIAL PRIMARY KEY,
-    item_id INTEGER REFERENCES items (id) NOT NULL,
-    borrowers_id INTEGER REFERENCES users (id) NOT NULL,
+    item_id INTEGER REFERENCES items(id) NOT NULL,
+    borrowers_id INTEGER REFERENCES users(id) NOT NULL,
     issue_date DATE NOT NULL DEFAULT CURRENT_DATE,
     return_date DATE
 );
 
-INSERT INTO items (item_id, borrowers_id) VALUES 
+INSERT INTO loans (item_id, borrowers_id) VALUES 
     (1, 1);
 
-INSERT INTO items (item_id, borrowers_id, issue_date) VALUES 
+INSERT INTO loans (item_id, borrowers_id, issue_date) VALUES 
     (2, 2, '2018-07-08');
 
 COMMIT;
