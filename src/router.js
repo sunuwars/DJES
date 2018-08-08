@@ -7,11 +7,11 @@ const pg = require('pg');
 
 const queryString = require('querystring');
 
-const router = (request, response) => {
-  const endpoint = request.url.split('/')[1];
+const router = (req, res) => {
+  const endpoint = req.url.split('/')[1];
 
   if (endpoint === '') {
-    handlers.home();
+    handlers.home(req, res);
   } else if (endpoint === 'search') {
     handlers.search(); // some arguments maybe
   } else if (endpoint === 'request-item') {
@@ -23,3 +23,5 @@ const router = (request, response) => {
   }
 
 }
+
+module.exports = router;

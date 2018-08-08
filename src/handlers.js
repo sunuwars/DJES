@@ -19,11 +19,18 @@ contentType = {
 
 const handlers = {
 
-  home: function () {
+  home: function (req, res) {
     console.log('running handlers.home');
+    fs.readFile(buildPath('index.html'), (err, file) => {
+      if (err) {
+        res.writeHead(500, { 'Content-Type' : 'text/html' });
+        res.end('<h1>Server Error</h1>');
+      } else {
+        res.writeHead(200, { 'Content-Type' : 'text/html' });
+        res.end(file);
+      }
+    })
 
-
-    // add some innards
   },
   public: function () {
     // add some innards
