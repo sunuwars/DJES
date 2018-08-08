@@ -20,19 +20,31 @@ contentType = {
 const handlers = {
 
   home: function (req, res) {
-    console.log('running handlers.home');
     fs.readFile(buildPath('index.html'), (err, file) => {
       if (err) {
         res.writeHead(500, { 'Content-Type' : 'text/html' });
         res.end('<h1>Server Error</h1>');
+        console.log("home error")
       } else {
         res.writeHead(200, { 'Content-Type' : 'text/html' });
         res.end(file);
       }
     })
-
   },
-  public: function () {
+
+  public: function (req, res, endpoint) {
+    fs.readFile(buildPath(endpoint), (err, file) => {
+      if (err) {
+        res.writeHead(500, { 'Content-Type' : 'text/html' });
+        res.end('<h1>Server Error</h1>');
+        console.log("public error");
+      } else {
+        const ext = endpoint.split('.')[1];
+        console.log("ext: ", ext);
+        res.writeHead(200, { 'Content-Type' : contentType[ext] });
+        res.end(file);
+      }
+    })
     // add some innards
   },
   search: function () {

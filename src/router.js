@@ -19,7 +19,7 @@ const router = (req, res) => {
   } else if (endpoint === 'add-item') {
     handlers.addItem(); // some arguments
   } else {
-    handlers.public(); // some arguments probably needed to get the file they're requesting
+    handlers.public(req, res, endpoint); // some arguments probably needed to get the file they're requesting
   }
 
 }
