@@ -10,9 +10,12 @@ tape('tape is working', t => {
 
 tape('test get data', t => {
     runDbBuild((err) => {
-        const expected = '';
-        getData('SELECT * FROM users', (err, gotdata) =>
-        t.deepEquals(gotdata, expected, 'getData should return itself'));
+        t.error(err, 'No Error');
+        const expected = 1;
+        getData((err, gotdata) => {
+        if (err) console.log(err);    
+        t.deepEqual(gotdata[0].id, expected, 'getData should return itself');
         t.end();
+    });      
     })
-})
+});
