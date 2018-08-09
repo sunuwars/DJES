@@ -1,4 +1,8 @@
 language: node_js
 node_js :
- - "node"
+- "node"
+before_script:
+- psql -c 'CREATE DATABASE toolshare;' -U postgres
+- psql -c "CREATE USER sunuwars WITH PASSWORD 'sunuwars123';" -U postgres
+- psql -c 'ALTER DATABASE toolshare OWNER TO sunuwars;' -U postgres
 after_success: npm run coverage
