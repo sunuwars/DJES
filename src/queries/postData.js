@@ -41,6 +41,7 @@ const postData = (name, email, itemId, cb) => {
           [name, email],
           (err, res) => {
             if (err) {
+              console.log(err);
               return cb(err);
             }
             borrowerId = res.rows[0].id;
