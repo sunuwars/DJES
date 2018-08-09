@@ -11,6 +11,8 @@ const router = (req, res) => {
     handlers.requestItem(req, res);
   } else if (endpoint === "add-item") {
     handlers.addItem(); // some arguments
+  } else if (endpoint === "testing") {
+    handlers.testData(req, res);
   } else if (endpoint === "success") {
     handlers.success(req, res);
   } else {
