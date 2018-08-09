@@ -18,7 +18,7 @@ const contentType = {
 };
 
 const handlers = {
-  home: function(req, res) {
+  home(req, res) {
     fs.readFile(buildPath("index.html"), (err, file) => {
       if (err) {
         res.writeHead(500, { "Content-Type": "text/html" });
@@ -31,7 +31,7 @@ const handlers = {
     });
   },
 
-  public: function(req, res, endpoint) {
+  public(req, res, endpoint) {
     fs.readFile(buildPath(endpoint), (err, file) => {
       if (err) {
         res.writeHead(500, { "Content-Type": "text/html" });
@@ -39,22 +39,20 @@ const handlers = {
         console.log("public error");
       } else {
         // const ext = endpoint.split('.')[1];
-        console.log("ext: ", path.extname(endpoint));
         res.writeHead(200, {
           "Content-Type": contentType[path.extname(endpoint)]
         });
         res.end(file);
       }
     });
+  },
+  search(req, res) {
     // add some innards
   },
-  search: function(req, res) {
+  requestItem() {
     // add some innards
   },
-  requestItem: function() {
-    // add some innards
-  },
-  addItem: function() {
+  addItem() {
     // add some innards
   }
 };
