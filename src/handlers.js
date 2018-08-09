@@ -1,10 +1,10 @@
+/* eslint-disable */
+
 const fs = require("fs");
 const path = require("path");
 const postData = require("./queries/postData");
 
-const getData = require('./queries/getData');
-
-
+const getData = require("./queries/getData");
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
@@ -51,9 +51,11 @@ const handlers = {
   },
 
   search(req, res, endpoint) {
-    const qry = decodeURIComponent(endpoint.split("?q=")[1]).replace(/[^A-Za-z0-9 ]/,"").toLowerCase();
+    const qry = decodeURIComponent(endpoint.split("?q=")[1])
+      .replace(/[^A-Za-z0-9 ]/, "")
+      .toLowerCase();
     getData(qry, (err, result) => {
-      if(err) {
+      if (err) {
         res.writeHead(500, { "Content-Type": "text/html" });
         res.end("<h1>Server Error</h1>");
         console.log("search error");
@@ -61,8 +63,7 @@ const handlers = {
         res.writeHead(200, "Content-type: application/json");
         res.end(JSON.stringify(result));
       }
-    })
-
+    });
   },
   requestItem(req, res) {
     if (req.method === "POST") {
@@ -108,14 +109,17 @@ const handlers = {
   },
 
   testData: function(req, response) {
-    getData((err,res) => {
-      if(err) {
+    getData("", (err, res) => {
+      if (err) {
+        response.writeHead(500, "Content-Type:text/html");
+        response.end("<h1>Sorry, there was a problem getting the users</h1>");
         console.log(err);
       } else {
+        let output = JSON.stringify(res);
         response.writeHead(200, { "Content-Type": "application/json" });
-        response.end(JSON.stringify(res));
+        response.end(output);
       }
-    })
+    });
   }
 };
 
