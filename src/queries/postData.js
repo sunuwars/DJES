@@ -8,7 +8,16 @@ const addLoan = (itemId, borrowerId, cb) => {
       if (err) {
         return cb(err);
       }
-      return cb(null, res);
+      dbConnection.query(
+        `UPDATE items SET on_loan = TRUE WHERE items.id = $1`,
+        [itemId],
+        (err, res) => {
+          if (err) {
+            return cb(err);
+          }
+          return cb(null, res);
+        }
+      );
     }
   );
 };
