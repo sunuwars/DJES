@@ -19,7 +19,7 @@ test("Post request returns a status code of 302", t => {
     let data = {
       name: "anon",
       email: "sang@gmail.com",
-      item: "1"
+      item: "5"
     };
     supertest(router)
       .post("/request-item")

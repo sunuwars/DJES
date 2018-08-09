@@ -1,14 +1,20 @@
 const databaseConnection = require("../database/db_connection.js");
 
 // qry is the db query we want to make
-const getData = cb => {
-  databaseConnection.query("SELECT * FROM items", (err, res) => {
-    if (err) {
-      cb(err);
-    } else {
-      cb(null, res.rows);
+const getData = (qry, cb) => {
+  databaseConnection.query(
+    `SELECT users.name, users.fav_colour, items.name, items.description 
+    FROM items 
+    INNER JOIN users 
+    ON items.lender_id = users.id 
+    WHERE lower(items.name) LIKE '%${qry}%' OR lower(items.description) LIKE '%${qry}%'`,
+    (err, res) => {
+      if (err) {
+        return cb(err);
+      }
+      return cb(null, res.rows);
     }
-  });
+  );
 };
 
 module.exports = getData;

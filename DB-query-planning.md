@@ -1,10 +1,23 @@
-# Joe and Dom thinking of queries:
+# Joe and Dom (and Eve now!) thinking of queries:
+Misc notes
 
 ## People searching:
 
 * User searches for item
     * `SELECT * FROM items WHERE lower(name) LIKE '%{user-input.toLowerCase()}%' OR lower(description) LIKE '%{user-input.toLowerCase()}%';
     * The above is passed in using JS template literal. Do we need to escape the percentages?
+
+* Updated query example:
+`SELECT users.name, items.name, items.description FROM items
+                               INNER JOIN users ON items.lender_id = users.id 
+                               WHERE lower(items.name) LIKE '%blade%' OR lower(items.description) LIKE '%blade%';
+`
+
+`SELECT users.name, users.fav_colour, items.name, items.description 
+FROM items 
+INNER JOIN users 
+ON items.lender_id = users.id 
+WHERE lower(items.name) LIKE '%$1%' OR lower(items.description) LIKE '%$1%';`
 
 * User searches for item, with box checked to only show items that are available (ie not out on loan)
     * `SELECT * FROM loans WHERE item_id=${item_id}`

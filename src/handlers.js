@@ -50,16 +50,18 @@ const handlers = {
     });
   },
 
-  search(req, response) {
-    getData((err, res) => {
+  search(req, res, endpoint) {
+    const qry = decodeURIComponent(endpoint.split("?q=")[1])
+      .replace(/[^A-Za-z0-9 ]/, "")
+      .toLowerCase();
+    getData(qry, (err, result) => {
       if (err) {
-        response.writeHead(500, "Content-Type:text/html");
-        response.end("<h1>Sorry, there was a problem getting the users</h1>");
-        console.log(err);
+        res.writeHead(500, { "Content-Type": "text/html" });
+        res.end("<h1>Server Error</h1>");
+        console.log("search error");
       } else {
-        let output = JSON.stringify(res);
-        response.writeHead(200, { "Content-Type": "application/json" });
-        response.end(output);
+        res.writeHead(200, "Content-type: application/json");
+        res.end(JSON.stringify(result));
       }
     });
   },
@@ -107,7 +109,7 @@ const handlers = {
   },
 
   testData: function(req, response) {
-    getData((err, res) => {
+    getData("", (err, res) => {
       if (err) {
         response.writeHead(500, "Content-Type:text/html");
         response.end("<h1>Sorry, there was a problem getting the users</h1>");
