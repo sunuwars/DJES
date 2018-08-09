@@ -17,15 +17,16 @@ CREATE TABLE items (
     id SERIAL PRIMARY KEY,
     name VARCHAR(80) NOT NULL,
     description TEXT,
-    lender_id INTEGER REFERENCES users(id) NOT NULL
+    lender_id INTEGER REFERENCES users(id) NOT NULL,
+    on_loan BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-INSERT INTO items (name, description, lender_id) VALUES
-    ('Knife', 'Sharp blade!', 2),
-    ('Lawnmower', 'Sharp blades!', 1), 
-    ('Shovel', 'Good for hiding bodies', 1), 
-    ('Cake', 'Eat it soon', 2),
-    ('White chocolate', 'Disgusting', 2);
+INSERT INTO items (name, description, lender_id, on_loan) VALUES
+    ('Knife', 'Sharp blade!', 2, TRUE),
+    ('Lawnmower', 'Sharp blades!', 1, TRUE), 
+    ('Shovel', 'Good for hiding bodies', 1, FALSE), 
+    ('Cake', 'Eat it soon', 2, TRUE),
+    ('White chocolate', 'Disgusting', 2, FALSE);
 
 CREATE TABLE loans (
     id SERIAL PRIMARY KEY,
