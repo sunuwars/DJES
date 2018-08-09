@@ -4,5 +4,5 @@ node_js :
 before_script:
 - psql -c 'CREATE DATABASE toolshare;' -U postgres
 - psql -c "CREATE USER sunuwars WITH PASSWORD 'sunuwars123';" -U postgres
-- psql -c "ALTER DATABASE toolshare OWNER TO sunuwars"
+- psql -c 'ALTER DATABASE toolshare OWNER TO sunuwars;'
 after_success: npm run coverage
