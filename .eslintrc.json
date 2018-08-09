@@ -1,0 +1,13 @@
+{
+  "extends": ["node", "prettier"],
+  "env": {
+    "node": true,
+    "browser": true,
+    "commonjs": false
+  },
+  "rules": {
+    "import/no-commonjs": 0,
+    "no-console": 0,
+    "import/no-nodejs-modules": 0
+  }
+}
