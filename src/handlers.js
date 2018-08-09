@@ -1,8 +1,6 @@
-/* eslint-disable */
-
-const superRequest = require("request");
 const fs = require("fs");
 const path = require("path");
+const postData = require("./queries/postData");
 
 const getData = require('./queries/getData');
 
@@ -24,7 +22,7 @@ const contentType = {
 };
 
 const handlers = {
-  home: function(req, res) {
+  home(req, res) {
     fs.readFile(buildPath("index.html"), (err, file) => {
       if (err) {
         res.writeHead(500, { "Content-Type": "text/html" });
@@ -37,30 +35,64 @@ const handlers = {
     });
   },
 
-  public: function(req, res, endpoint) {
+  public(req, res, endpoint) {
     fs.readFile(buildPath(endpoint), (err, file) => {
       if (err) {
         res.writeHead(500, { "Content-Type": "text/html" });
         res.end("<h1>Server Error</h1>");
         console.log("public error");
       } else {
-        // const ext = endpoint.split('.')[1];
-        console.log("ext: ", path.extname(endpoint));
         res.writeHead(200, {
           "Content-Type": contentType[path.extname(endpoint)]
         });
         res.end(file);
       }
     });
+  },
+
+  search(req, res) {
     // add some innards
   },
-  search: function(req, res) {
-    // add some innards
+  requestItem(req, res) {
+    if (req.method === "POST") {
+      let data = "";
+      req
+        .on("data", chunk => {
+          data += chunk;
+        })
+        .on("end", () => {
+          const parsedData = JSON.parse(data);
+          postData(
+            parsedData.data.name,
+            parsedData.data.email,
+            parsedData.data.item,
+            err => {
+              if (err) {
+                res.writeHead(500, { "Content-Type": "text/html" });
+                res.end("<h1>Server Error</h1>");
+                console.log("postdata error");
+              } else {
+                res.writeHead(302, { Location: "/success" });
+                res.end();
+              }
+            }
+          );
+        });
+    }
   },
-  requestItem: function() {
-    // add some innards
+  success(req, res) {
+    fs.readFile(buildPath("success.html"), (err, file) => {
+      if (err) {
+        res.writeHead(500, { "Content-Type": "text/html" });
+        res.end("<h1>Server Error</h1>");
+        console.log("home error");
+      } else {
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.end(file);
+      }
+    });
   },
-  addItem: function() {
+  addItem() {
     // add some innards
   },
 

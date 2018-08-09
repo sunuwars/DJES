@@ -23,7 +23,7 @@
     "tape": "^4.9.1"
   },
   "scripts": {
-    "test": "NODE_ENV=test node test/getData.test.js | tap-spec",
+    "test": "tape ./test/*.test.js",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js"
   },

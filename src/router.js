@@ -8,14 +8,14 @@ const router = (req, res) => {
   } else if (endpoint === "search") {
     handlers.search(req, res); // some arguments maybe
   } else if (endpoint === "request-item") {
-    handlers.requestItem(); // some arguments
+    handlers.requestItem(req, res);
   } else if (endpoint === "add-item") {
     handlers.addItem(); // some arguments
-  } else if (endpoint === 'testing') {
+  } else if (endpoint === "testing") {
     handlers.testData(req, res);
-  }
-  
-  else {
+  } else if (endpoint === "success") {
+    handlers.success(req, res);
+  } else {
     handlers.public(req, res, endpoint);
   }
 };
