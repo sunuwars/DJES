@@ -2,9 +2,9 @@
 
 const fs = require("fs");
 const path = require("path");
-const postData = require("./queries/postData");
-
+const {postData, insertData} = require("./queries/postData");
 const getData = require("./queries/getData");
+const runDbBuild = require("./database/db_build");
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
@@ -105,20 +105,57 @@ const handlers = {
       }
     });
   },
-  addItem() {
-    // add some innards
+  addItem(req, res) {
+    // SQL query: Add user
+    // SQL query: Add item from that user
+    if (req.method === "POST") {
+      let data = "";
+      req.on("data", chunk => {
+        data += chunk;
+      })
+      .on("end", () => {
+        const parsedData = JSON.parse(data);
+        insertData(
+          parsedData.data.name,
+          parsedData.data.email,
+          parsedData.data.itemName,
+          parsedData.data.itemDesc, 
+          err => {
+            if (err) {
+              res.writeHead(500, { "Content-Type": "text/html" });
+              res.end("<h1>Server Error</h1>");
+              console.log("insertdata error");
+            } else {
+              //need to change location?
+              res.writeHead(302, { Location: "/success" });
+              res.end();
+            }
+          }
+        )
+      })
+    }
+
+
   },
 
   testData: function(req, response) {
-    getData("", (err, res) => {
+    runDbBuild((err, res) => {
       if (err) {
         response.writeHead(500, "Content-Type:text/html");
         response.end("<h1>Sorry, there was a problem getting the users</h1>");
         console.log(err);
       } else {
-        let output = JSON.stringify(res);
-        response.writeHead(200, { "Content-Type": "application/json" });
-        response.end(output);
+        getData("", (err, res) => {
+          if (err) {
+            response.writeHead(500, "Content-Type:text/html");
+            response.end(
+              "<h1>Sorry, there was a problem getting the users</h1>"
+            );
+            console.log(err);
+          }
+          response.writeHead(200, { "Content-Type": "application/json" });
+          response.end(JSON.stringify(res));
+        });
       }
     });
   }

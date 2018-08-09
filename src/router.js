@@ -6,11 +6,11 @@ const router = (req, res) => {
   if (endpoint === "") {
     handlers.home(req, res);
   } else if (endpoint.includes("search?q=")) {
-    handlers.search(req, res, endpoint); // some arguments maybe
+    handlers.search(req, res, endpoint);
   } else if (endpoint === "request-item") {
     handlers.requestItem(req, res);
   } else if (endpoint === "add-item") {
-    handlers.addItem(); // some arguments
+    handlers.addItem(req, res, endpoint); // some arguments
   } else if (endpoint === "testing") {
     handlers.testData(req, res);
   } else if (endpoint === "success") {

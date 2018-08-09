@@ -32,3 +32,25 @@ test("Post request returns a status code of 302", t => {
       });
   });
 });
+
+test("Post request returns a status code of 302", t => {
+  runDbBuild((err, res) => {
+    t.error(err, "No error");
+    console.log("res: ", res)
+    let data = {
+      name: "anon",
+      email: "sang@gmail.com",
+      itemName: "Scary thing",
+      itemDesc: "Super spooky"
+    };
+    supertest(router)
+      .post("/add-item")
+      .send({ data })
+      .expect(302)
+      .end((err, res) => {
+        t.error(err);
+        t.equal(res.statusCode, 302, "Should return 302");
+        t.end();
+      });
+  });
+});

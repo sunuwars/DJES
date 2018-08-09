@@ -53,4 +53,50 @@ const postData = (name, email, itemId, cb) => {
   );
 };
 
-module.exports = postData;
+
+const addItem = (name, description, lenderId, cb) => {
+  dbConnection.query(
+    `INSERT INTO items (name, description, lender_id) VALUES ('${name}', '${description}', ${lenderId}) RETURNING id`, 
+    (err, res) => {
+      if (err) {
+        return cb(err);
+      }
+    } 
+  )
+};
+
+// Below function is for adding items (and new user if not already present)
+// WET. MAY DRY EVENTUALLY
+// params passed as arguments by handler/router
+const insertData = (name, email, itemName, itemDesc, cb) => {
+  console.log("insertData");
+  let lenderId;
+  dbConnection.query(
+    `SELECT id FROM users WHERE email=$1`,
+    [email],
+    (err, res) => {
+      if (err) {
+        return cb(err);
+      }
+      if (res.rowCount > 0) {
+        lenderId = res.rows[0].id;
+        addItem(itemName, itemDesc, lenderId, cb);
+      } else {
+        dbConnection.query(
+          `INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id`,
+          [name, email],
+          (err, res) => {
+            if (err) {
+              return cb(err);
+            }
+            lenderId = res.rows[0].id;
+            // Need to update these
+            addItem(itemName, itemDesc, lenderId, cb);
+          }
+        );
+      }
+    }
+  );
+};
+
+module.exports = { postData, insertData };
