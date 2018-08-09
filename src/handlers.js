@@ -3,8 +3,8 @@
 const fs = require("fs");
 const path = require("path");
 const postData = require("./queries/postData");
-
 const getData = require("./queries/getData");
+const runDbBuild = require("./database/db_build");
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
@@ -109,15 +109,23 @@ const handlers = {
   },
 
   testData: function(req, response) {
-    getData("", (err, res) => {
+    runDbBuild((err, res) => {
       if (err) {
         response.writeHead(500, "Content-Type:text/html");
         response.end("<h1>Sorry, there was a problem getting the users</h1>");
         console.log(err);
       } else {
-        let output = JSON.stringify(res);
-        response.writeHead(200, { "Content-Type": "application/json" });
-        response.end(output);
+        getData("", (err, res) => {
+          if (err) {
+            response.writeHead(500, "Content-Type:text/html");
+            response.end(
+              "<h1>Sorry, there was a problem getting the users</h1>"
+            );
+            console.log(err);
+          }
+          response.writeHead(200, { "Content-Type": "application/json" });
+          response.end(JSON.stringify(res));
+        });
       }
     });
   }
