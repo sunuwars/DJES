@@ -50,8 +50,19 @@ const handlers = {
     });
   },
 
-  search(req, res) {
-    // add some innards
+  search(req, res, endpoint) {
+    const qry = decodeURIComponent(endpoint.split("?q=")[1]).replace(/[^A-Za-z0-9 ]/,"").toLowerCase();
+    getData(qry, (err, result) => {
+      if(err) {
+        res.writeHead(500, { "Content-Type": "text/html" });
+        res.end("<h1>Server Error</h1>");
+        console.log("search error");
+      } else {
+        res.writeHead(200, "Content-type: application/json");
+        res.end(JSON.stringify(result));
+      }
+    })
+
   },
   requestItem(req, res) {
     if (req.method === "POST") {
