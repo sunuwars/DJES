@@ -15,6 +15,13 @@ function request(url, cb) {
   xhr.send();
 }
 
+// functions to clear population on each button click
+function clearList(list) {
+  while (list.firstChild) {
+    list.removeChild(list.firstChild);
+  }
+}
+
 searchBtn.addEventListener("click", function(e) {
   e.preventDefault();
   var inputValue = encodeURIComponent(input.value);
@@ -38,6 +45,7 @@ function updateDom(err, data) {
 
     var items = JSON.parse(data);
     var table = document.getElementById("items-table");
+    clearList(table);
 
     items.forEach(function(item) {
       // adding our item names
