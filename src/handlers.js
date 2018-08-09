@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const postData = require("./queries/postData");
-const querystring = require("querystring");
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
