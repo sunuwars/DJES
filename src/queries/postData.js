@@ -89,7 +89,8 @@ const insertData = (name, email, itemName, itemDesc, cb) => {
               return cb(err);
             }
             lenderId = res.rows[0].id;
-            addItem(itemId, lenderId, cb);
+            // Need to update these
+            addItem(itemName, itemDesc, lenderId, cb);
           }
         );
       }
@@ -97,4 +98,4 @@ const insertData = (name, email, itemName, itemDesc, cb) => {
   );
 };
 
-module.exports = postData;
+module.exports = { postData, insertData };

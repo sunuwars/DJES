@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const postData = require("./queries/postData");
+const {postData, insertData} = require("./queries/postData");
 const getData = require("./queries/getData");
 const runDbBuild = require("./database/db_build");
 

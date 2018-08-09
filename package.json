@@ -23,7 +23,7 @@
     "tape": "^4.9.1"
   },
   "scripts": {
-    "test": "tape ./test/*.test.js",
+    "test": "tape ./test/post-data.test.js",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js"
   },
