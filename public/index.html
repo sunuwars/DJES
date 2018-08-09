@@ -32,6 +32,15 @@
     <section class="lend-container">
       <h3>Lending to go here</h3>
     </section>
+    <section class="request-container">
+      <form id="request-form" class="hidden">
+          <input type="text" id="name-input" placeholder="Enter your name here..." autocomplete="off" required>
+          <input type="email" id="email-input" placeholder="Enter your email here..." autocomplete="off" required>
+          <input type="number" id="item-id" class="hidden">
+          <button id="request-btn">request to borrow</button>
+        </form>
+        <div id='success'></div>
+    </section>
 
   </main>
   <script type="text/javascript" src="script.js"></script>
