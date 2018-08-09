@@ -1,6 +1,12 @@
+/* eslint-disable */
+
 const superRequest = require("request");
 const fs = require("fs");
 const path = require("path");
+
+const getData = require('./queries/getData');
+
+
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
@@ -56,6 +62,17 @@ const handlers = {
   },
   addItem: function() {
     // add some innards
+  },
+
+  testData: function(req, response) {
+    getData((err,res) => {
+      if(err) {
+        console.log(err);
+      } else {
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(JSON.stringify(res));
+      }
+    })
   }
 };
 

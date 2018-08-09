@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS users, items, loans CASCADE;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -22,7 +22,10 @@ CREATE TABLE items (
 
 INSERT INTO items (name, description, lender_id) VALUES 
     ('Knife', 'Sharp blade!', 2),
-    ('Lawnmower', 'Sharp blades!', 1);
+    ('Lawnmower', 'Sharp blades!', 1), 
+    ('Shovel', 'Good for hiding bodies', 1), 
+    ('Cake', 'Eat it soon', 2),
+    ('White chocolate', 'Disgusting', 2);
 
 CREATE TABLE loans (
     id SERIAL PRIMARY KEY,
@@ -36,6 +39,11 @@ INSERT INTO loans (item_id, borrowers_id) VALUES
     (1, 1);
 
 INSERT INTO loans (item_id, borrowers_id, issue_date) VALUES 
-    (2, 2, '2018-07-08');
+    (2, 2, '2018-08-07');
+
+INSERT INTO loans (item_id, borrowers_id, issue_date, return_date) VALUES 
+    (3, 2, '2018-08-05', '2018-08-08'), 
+    (4, 1, '2018-08-05', '2018-08-06'), 
+    (4, 1, '2018-08-07', NULL);
 
 COMMIT;

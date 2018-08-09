@@ -11,7 +11,11 @@ const router = (req, res) => {
     handlers.requestItem(); // some arguments
   } else if (endpoint === "add-item") {
     handlers.addItem(); // some arguments
-  } else {
+  } else if (endpoint === 'testing') {
+    handlers.testData(req, res);
+  }
+  
+  else {
     handlers.public(req, res, endpoint);
   }
 };
