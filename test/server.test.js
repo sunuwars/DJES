@@ -4,7 +4,7 @@ const test = require("tape");
 const supertest = require("supertest");
 const router = require("../src/router");
 
-test("Initialise", t => {
+test("Initialise server tests", t => {
   let num = 2;
   t.equal(num, 2, "Should return 2");
   t.end();

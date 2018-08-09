@@ -1,6 +1,7 @@
-const superRequest = require("request");
 const fs = require("fs");
 const path = require("path");
+const postData = require("./queries/postData");
+const querystring = require("querystring");
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
@@ -38,7 +39,6 @@ const handlers = {
         res.end("<h1>Server Error</h1>");
         console.log("public error");
       } else {
-        // const ext = endpoint.split('.')[1];
         res.writeHead(200, {
           "Content-Type": contentType[path.extname(endpoint)]
         });
@@ -46,11 +46,48 @@ const handlers = {
       }
     });
   },
+
   search(req, res) {
     // add some innards
   },
-  requestItem() {
-    // add some innards
+  requestItem(req, res) {
+    if (req.method === "POST") {
+      let data = "";
+      req
+        .on("data", chunk => {
+          data += chunk;
+        })
+        .on("end", () => {
+          const parsedData = JSON.parse(data);
+          postData(
+            parsedData.data.name,
+            parsedData.data.email,
+            parsedData.data.item,
+            err => {
+              if (err) {
+                res.writeHead(500, { "Content-Type": "text/html" });
+                res.end("<h1>Server Error</h1>");
+                console.log("postdata error");
+              } else {
+                res.writeHead(302, { Location: "/success" });
+                res.end();
+              }
+            }
+          );
+        });
+    }
+  },
+  success(req, res) {
+    fs.readFile(buildPath("success.html"), (err, file) => {
+      if (err) {
+        res.writeHead(500, { "Content-Type": "text/html" });
+        res.end("<h1>Server Error</h1>");
+        console.log("home error");
+      } else {
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.end(file);
+      }
+    });
   },
   addItem() {
     // add some innards
