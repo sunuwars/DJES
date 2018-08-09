@@ -50,8 +50,18 @@ const handlers = {
     });
   },
 
-  search(req, res) {
-    // add some innards
+  search(req, response) {
+    getData((err, res) => {
+      if (err) {
+        response.writeHead(500, "Content-Type:text/html");
+        response.end("<h1>Sorry, there was a problem getting the users</h1>");
+        console.log(err);
+      } else {
+        let output = JSON.stringify(res);
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(output);
+      }
+    });
   },
   requestItem(req, res) {
     if (req.method === "POST") {

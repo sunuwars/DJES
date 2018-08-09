@@ -1,4 +1,6 @@
 /* eslint-disable */
+var searchBtn = document.getElementById("search-btn");
+var input = document.querySelector("#search-input");
 
 function request(url, cb) {
   var xhr = new XMLHttpRequest();
@@ -12,6 +14,21 @@ function request(url, cb) {
   xhr.open("GET", url, true);
   xhr.send();
 }
+
+searchBtn.addEventListener("click", function(e) {
+  e.preventDefault();
+  var inputValue = encodeURIComponent(input.value);
+  console.log("input " + inputValue);
+
+  // add validation alert if buttons gets clicked without input val
+  if (inputValue.trim() == "") {
+    alert("Please enter a search Term");
+    return;
+  } else {
+    // requestData uses a callback populate/ musicPopulate to populate the DOM
+    request("/search?q=" + inputValue, updateDom);
+  }
+});
 
 function updateDom(err, data) {
   if (err) {
