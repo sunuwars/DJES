@@ -74,10 +74,11 @@ const handlers = {
         })
         .on("end", () => {
           const parsedData = JSON.parse(data);
+          console.log(parsedData.name, parsedData.email, parsedData.item);
           postData(
-            parsedData.data.name,
-            parsedData.data.email,
-            parsedData.data.item,
+            parsedData.name,
+            parsedData.email,
+            Number(parsedData.item),
             err => {
               if (err) {
                 res.writeHead(500, { "Content-Type": "text/html" });
