@@ -104,8 +104,37 @@ const handlers = {
       }
     });
   },
-  addItem() {
-    // add some innards
+  addItem(req, res) {
+    // SQL query: Add user
+    // SQL query: Add item from that user
+    if (req.method === "POST") {
+      let data = "";
+      req.on("data", chunk => {
+        data += chunk;
+      })
+      .on("end", () => {
+        const parsedData = JSON.parse(data);
+        insertData(
+          parsedData.data.name,
+          parsedData.data.email,
+          parsedData.data.itemName,
+          parsedData.data.itemDesc, 
+          err => {
+            if (err) {
+              res.writeHead(500, { "Content-Type": "text/html" });
+              res.end("<h1>Server Error</h1>");
+              console.log("insertdata error");
+            } else {
+              //need to change location?
+              res.writeHead(302, { Location: "/success" });
+              res.end();
+            }
+          }
+        )
+      })
+    }
+
+
   },
 
   testData: function(req, response) {
