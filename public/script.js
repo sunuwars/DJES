@@ -87,26 +87,34 @@ function updateDom(err, data) {
     var table = document.getElementById("items-table");
     clearList(table);
 
-    items.forEach(function(item) {
-      // adding our item names
-      var row = document.createElement("tr");
-      var name = document.createElement("td");
-      var loanBtn = document.createElement('button');
-      loanBtn.textContent = 'borrow';
-      loanBtn.setAttribute('id', item.id);
-      loanBtn.setAttribute('onclick', "borrow(this.id)");
-      name.innerHTML = item.name;
-      row.appendChild(name);
-
-      // adding our item descriptions
-      var description = document.createElement("td");
-      description.innerHTML = item.description;
-      row.appendChild(description);
-      row.appendChild(loanBtn);
-      // add everything to the table
-      table.appendChild(row);
-      
-    });
+    if(items.length > 0){
+      items.forEach(function(item) {
+        // adding our item names
+        var row = document.createElement("tr");
+        var name = document.createElement("td");
+        var loanBtn = document.createElement('button');
+        loanBtn.textContent = 'borrow';
+        loanBtn.setAttribute('id', item.id);
+        loanBtn.setAttribute('onclick', "borrow(this.id)");
+        name.innerHTML = item.name;
+        row.appendChild(name);
+  
+        // adding our item descriptions
+        var description = document.createElement("td");
+        description.innerHTML = item.description;
+        row.appendChild(description);
+        row.appendChild(loanBtn);
+        // add everything to the table
+        table.appendChild(row);
+        
+      });
+    }
+    else{
+      var errorMsg = document.createElement('h3');
+      errorMsg.textContent = 'Sorry no items match that search';
+      table.appendChild(errorMsg);
+    }
+    
   }
 }
 

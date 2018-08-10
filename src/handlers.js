@@ -62,7 +62,7 @@ const handlers = {
       } else {
         res.writeHead(200, "Content-type: application/json");
         res.end(JSON.stringify(result));
-      }
+       }
     });
   },
   requestItem(req, res) {
