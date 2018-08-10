@@ -9,6 +9,11 @@ https://sleepy-beyond-95793.herokuapp.com/
 3. `CREATE DATABASE toolshare;`
 4. `CREATE USER sunuwars WITH SUPERUSER PASSWORD 'sunuwars123';`
 5. `ALTER DATABASE toolshare OWNER TO sunuwars;`
+
+INSTEAD OF steps 2 to 5, another option is to do this:
+`createdb toolshare -O sunuwars`
+(or `createdb toolshare –owner=sunuwars`)
+
 6. Create `config.env` in the project's root directory
 7. Copy `DB_URL = postgres://sunuwars:sunuwars123@localhost:5432/toolshare` into `config.env`
 8. `npm run dev`
