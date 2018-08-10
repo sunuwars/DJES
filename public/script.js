@@ -7,6 +7,7 @@ var borrowerEmail = document.querySelector("#email-input");
 var itemIdInput = document.getElementById('item-id');
 var successDiv= document.getElementById('success');
 var reqForm = document.getElementById('request-form');
+var allItemsBtn = document.getElementById('all-items-btn');
 
 function request(url, method, cb) {
   var xhr = new XMLHttpRequest();
@@ -76,6 +77,14 @@ searchBtn.addEventListener("click", function(e) {
   }
 });
 
+allItemsBtn.addEventListener("click", function(e) {
+  e.preventDefault();
+
+ 
+    // requestData uses a callback populate/ musicPopulate to populate the DOM
+    request("/search?q=", 'GET', updateDom);
+  
+});
 
 function updateDom(err, data) {
   if (err) {
@@ -87,26 +96,34 @@ function updateDom(err, data) {
     var table = document.getElementById("items-table");
     clearList(table);
 
-    items.forEach(function(item) {
-      // adding our item names
-      var row = document.createElement("tr");
-      var name = document.createElement("td");
-      var loanBtn = document.createElement('button');
-      loanBtn.textContent = 'borrow';
-      loanBtn.setAttribute('id', item.id);
-      loanBtn.setAttribute('onclick', "borrow(this.id)");
-      name.innerHTML = item.name;
-      row.appendChild(name);
-
-      // adding our item descriptions
-      var description = document.createElement("td");
-      description.innerHTML = item.description;
-      row.appendChild(description);
-      row.appendChild(loanBtn);
-      // add everything to the table
-      table.appendChild(row);
-      
-    });
+    if(items.length > 0){
+      items.forEach(function(item) {
+        // adding our item names
+        var row = document.createElement("tr");
+        var name = document.createElement("td");
+        var loanBtn = document.createElement('button');
+        loanBtn.textContent = 'borrow';
+        loanBtn.setAttribute('id', item.id);
+        loanBtn.setAttribute('onclick', "borrow(this.id)");
+        name.innerHTML = item.name;
+        row.appendChild(name);
+  
+        // adding our item descriptions
+        var description = document.createElement("td");
+        description.innerHTML = item.description;
+        row.appendChild(description);
+        row.appendChild(loanBtn);
+        // add everything to the table
+        table.appendChild(row);
+        
+      });
+    }
+    else{
+      var errorMsg = document.createElement('h3');
+      errorMsg.textContent = 'Sorry no items match that search';
+      table.appendChild(errorMsg);
+    }
+    
   }
 }
 
