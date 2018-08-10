@@ -142,12 +142,12 @@ const handlers = {
   },
 
   testData: function(req, response) {
-    runDbBuild((err, res) => {
-      if (err) {
-        response.writeHead(500, "Content-Type:text/html");
-        response.end("<h1>Sorry, there was a problem getting the users</h1>");
-        console.log(err);
-      } else {
+    // runDbBuild((err, res) => {
+    //   if (err) {
+    //     response.writeHead(500, "Content-Type:text/html");
+    //     response.end("<h1>Sorry, there was a problem getting the users</h1>");
+    //     console.log(err);
+    //   } else {
         getData("", (err, res) => {
           if (err) {
             response.writeHead(500, "Content-Type:text/html");
@@ -159,8 +159,8 @@ const handlers = {
           response.writeHead(200, { "Content-Type": "application/json" });
           response.end(JSON.stringify(res));
         });
-      }
-    });
+    //   }
+    // });
   }
 };
 

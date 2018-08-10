@@ -42,8 +42,9 @@ submitItemBtn.addEventListener("click", function(e){
   xhrPost.onreadystatechange = function() {
     if(xhrPost.readyState === 4 && xhrPost.status === 200) {
       console.log("submit item by lender successful!");
+      request("/testing", 'GET', updateDom);
     }
-
+    
   };
 
   xhrPost.open('POST', '/add-item', true);
