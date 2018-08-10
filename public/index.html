@@ -41,6 +41,16 @@
         </form>
         <div id='success'></div>
     </section>
+    <section class="submit-item-container">
+      <form id="submit-item-form" class="something" method="post" action="/add-item">
+        <input type="text" id="name" placeholder="Enter your name" autocomplete="off" required>
+        <input type="email" id="email" placeholder="Enter your email address" autocomplete="off" required>
+        <input type="text" id="item-name" placeholder="Item name" autocomplete="off" required>
+        <input type="text" id="item-desc" placeholder="Item description" autocomplete="off" required>
+        <input type="color" id="fav-colour" placeholder="Fav colour in hex" autocomplete="off" required>
+        <button id="submit-item">Submit your item</button>
+      </form>
+    </section>
 
   </main>
   <script type="text/javascript" src="script.js"></script>
