@@ -115,11 +115,14 @@ const handlers = {
       })
       .on("end", () => {
         const parsedData = JSON.parse(data);
+        console.log("PARSED DATA: ", parsedData);
+        // Previously used parsedData.data.name etc below
         insertData(
-          parsedData.data.name,
-          parsedData.data.email,
-          parsedData.data.itemName,
-          parsedData.data.itemDesc, 
+          parsedData.name,
+          parsedData.email,
+          parsedData.itemName,
+          parsedData.itemDesc, 
+          parsedData.favColour,
           err => {
             if (err) {
               res.writeHead(500, { "Content-Type": "text/html" });
@@ -139,12 +142,12 @@ const handlers = {
   },
 
   testData: function(req, response) {
-    runDbBuild((err, res) => {
-      if (err) {
-        response.writeHead(500, "Content-Type:text/html");
-        response.end("<h1>Sorry, there was a problem getting the users</h1>");
-        console.log(err);
-      } else {
+    // runDbBuild((err, res) => {
+    //   if (err) {
+    //     response.writeHead(500, "Content-Type:text/html");
+    //     response.end("<h1>Sorry, there was a problem getting the users</h1>");
+    //     console.log(err);
+    //   } else {
         getData("", (err, res) => {
           if (err) {
             response.writeHead(500, "Content-Type:text/html");
@@ -156,8 +159,8 @@ const handlers = {
           response.writeHead(200, { "Content-Type": "application/json" });
           response.end(JSON.stringify(res));
         });
-      }
-    });
+    //   }
+    // });
   }
 };
 
