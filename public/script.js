@@ -7,6 +7,7 @@ var borrowerEmail = document.querySelector("#email-input");
 var itemIdInput = document.getElementById('item-id');
 var successDiv= document.getElementById('success');
 var reqForm = document.getElementById('request-form');
+var allItemsBtn = document.getElementById('all-items-btn');
 
 function request(url, method, cb) {
   var xhr = new XMLHttpRequest();
@@ -76,6 +77,14 @@ searchBtn.addEventListener("click", function(e) {
   }
 });
 
+allItemsBtn.addEventListener("click", function(e) {
+  e.preventDefault();
+
+ 
+    // requestData uses a callback populate/ musicPopulate to populate the DOM
+    request("/search?q=", 'GET', updateDom);
+  
+});
 
 function updateDom(err, data) {
   if (err) {

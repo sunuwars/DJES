@@ -38,8 +38,8 @@ const handlers = {
   public(req, res, endpoint) {
     fs.readFile(buildPath(endpoint), (err, file) => {
       if (err) {
-        res.writeHead(500, { "Content-Type": "text/html" });
-        res.end("<h1>Server Error</h1>");
+        res.writeHead(404, { "Content-Type": "text/html" });
+        res.end("<h1>Page not found</h1>");
         console.log("public error");
       } else {
         res.writeHead(200, {
