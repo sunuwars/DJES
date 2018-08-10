@@ -1,5 +1,9 @@
 # DJES
 
+## See it live here: 
+https://sleepy-beyond-95793.herokuapp.com/
+
+## How to set up and see the magic
 1. Clone repo
 2. Run `psql` or `pgcli` on your command line
 3. `CREATE DATABASE toolshare;`
@@ -12,11 +16,14 @@
 10. ???
 11. Profit
 
+## What was the idea?
+Inspired by one of our FAC fellows, Michael, we decided that we wanted to give FAC members the opportunity to borrow and lend items. 
+
 Current functionality:
 - user can search the database to see which items are listed
 - user can request to borrow an item (request is added as an entry to the `loans` table)
 
-Functionality we were so close to completing:
+Functionality we were so close to completing (the code does exist on the backend, so feel free to have a look):
 - user can add an item for borrowing
 
 Functionality we were less close to completing:
