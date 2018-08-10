@@ -9,6 +9,8 @@ var successDiv = document.getElementById("success");
 var reqForm = document.getElementById("request-form");
 var submitItemBtn = document.getElementById("submit-item");
 var allItemsBtn = document.getElementById("all-items-btn");
+var nameCol = document.getElementById("name-column");
+var descCol = document.getElementById("desc-column");
 
 function request(url, method, cb) {
   var xhr = new XMLHttpRequest();
@@ -123,6 +125,20 @@ function updateDom(err, data) {
     var items = JSON.parse(data);
     var table = document.getElementById("items-table");
     clearList(table);
+
+    //add headers
+    var nameHeader = document.createElement("th");
+    var descHeader = document.createElement("th");
+    var buttonHeader = document.createElement("th");
+    var row = document.createElement("tr");
+
+    nameHeader.textContent = "Item Name";
+    descHeader.textContent = "Item Description";
+    buttonHeader.textContent = "Borrow";
+    row.appendChild(nameHeader);
+    row.appendChild(descHeader);
+    row.appendChild(buttonHeader);
+    table.appendChild(row);
 
     if (items.length > 0) {
       items.forEach(function(item) {
