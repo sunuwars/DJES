@@ -7,6 +7,7 @@ var borrowerEmail = document.querySelector("#email-input");
 var itemIdInput = document.getElementById('item-id');
 var successDiv= document.getElementById('success');
 var reqForm = document.getElementById('request-form');
+var submitItemBtn = document.getElementById('submit-item');
 
 function request(url, method, cb) {
   var xhr = new XMLHttpRequest();
@@ -27,6 +28,35 @@ function clearList(list) {
     list.removeChild(list.firstChild);
   }
 }
+
+submitItemBtn.addEventListener("click", function(e){
+  e.preventDefault();
+  var name = document.getElementById('lender-name').value;
+  var email = document.getElementById('lender-email').value;
+  var itemName = document.getElementById('item-name').value;
+  var itemDesc = document.getElementById('item-desc').value;
+  var favColour = document.getElementById('fav-colour').value;
+
+  var xhrPost = new XMLHttpRequest();
+
+  xhrPost.onreadystatechange = function() {
+    if(xhrPost.readyState === 4 && xhrPost.status === 200) {
+      console.log("submit item by lender successful!");
+    }
+
+  };
+
+  xhrPost.open('POST', '/add-item', true);
+  xhrPost.setRequestHeader('content-type', 'application/json');
+  var postData = {
+    name,
+    email,
+    itemName,
+    itemDesc,
+    favColour: favColour.replace("#","")
+  };
+  xhrPost.send(JSON.stringify(postData));
+});
 
 requestBtn.addEventListener("click", function(e) {
   e.preventDefault();

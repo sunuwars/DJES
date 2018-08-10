@@ -68,8 +68,9 @@ const addItem = (name, description, lenderId, cb) => {
 // Below function is for adding items (and new user if not already present)
 // WET. MAY DRY EVENTUALLY
 // params passed as arguments by handler/router
-const insertData = (name, email, itemName, itemDesc, cb) => {
+const insertData = (name, email, itemName, itemDesc, favColour, cb) => {
   console.log("insertData");
+  console.log(name, email, itemName, itemDesc, favColour)
   let lenderId;
   dbConnection.query(
     `SELECT id FROM users WHERE email=$1`,
@@ -83,8 +84,8 @@ const insertData = (name, email, itemName, itemDesc, cb) => {
         addItem(itemName, itemDesc, lenderId, cb);
       } else {
         dbConnection.query(
-          `INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id`,
-          [name, email],
+          `INSERT INTO users (name, email, fav_colour) VALUES ($1, $2, $3) RETURNING id`,
+          [name, email, favColour],
           (err, res) => {
             if (err) {
               return cb(err);

@@ -115,11 +115,14 @@ const handlers = {
       })
       .on("end", () => {
         const parsedData = JSON.parse(data);
+        console.log("PARSED DATA: ", parsedData);
+        // Previously used parsedData.data.name etc below
         insertData(
-          parsedData.data.name,
-          parsedData.data.email,
-          parsedData.data.itemName,
-          parsedData.data.itemDesc, 
+          parsedData.name,
+          parsedData.email,
+          parsedData.itemName,
+          parsedData.itemDesc, 
+          parsedData.favColour,
           err => {
             if (err) {
               res.writeHead(500, { "Content-Type": "text/html" });
