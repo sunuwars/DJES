@@ -43,10 +43,11 @@ submitItemBtn.addEventListener("click", function(e) {
   var xhrPost = new XMLHttpRequest();
 
   xhrPost.onreadystatechange = function() {
-    if (xhrPost.readyState === 4 && xhrPost.status === 200) {
+    setTimeout(() => {
+      // horrible hacky fix for 302 redirect
       console.log("submit item by lender successful!");
       request("/testing", "GET", updateDom);
-    }
+    }, 500);
   };
 
   xhrPost.open("POST", "/add-item", true);
