@@ -10,7 +10,7 @@ const router = (req, res) => {
   } else if (endpoint === "request-item") {
     handlers.requestItem(req, res);
   } else if (endpoint === "add-item") {
-    handlers.addItem(); // some arguments
+    handlers.addItem(req, res, endpoint); // some arguments
   } else if (endpoint === "testing") {
     handlers.testData(req, res);
   } else if (endpoint === "success") {
