@@ -1,6 +1,377 @@
-body {
-  background-color: #75876e;
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
-.hidden{
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* use border-box so that padding and margins are applied INSIDE elements' width. */
+
+/* 
+Green: hsl(165, 100%, 15%)    [PRIMARY]
+Pink: hsl(10, 100%, 80%)      [ACCENT] */
+
+* {
+  box-sizing: border-box;
+  font-family: "Raleway", sans-serif;
+  color: hsl(164, 50%, 90%);
+}
+
+body {
+  background-color: hsl(164, 90%, 95%);
+}
+
+.hidden {
   display: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  /* height: 100vh; */
+  margin: 0 128px 0 128px;
+  padding: 0;
+}
+
+header {
+  width: 100%;
+  padding-top: 40px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 48px;
+}
+
+h1 {
+  text-align: center;
+  font-weight: 900;
+  font-size: 4rem;
+  margin-bottom: 42px;
+  color: hsl(165, 100%, 15%);
+}
+
+h2 {
+  text-align: center;
+  font-weight: 400;
+  font-size: 2rem;
+  color: hsl(10, 100%, 70%);
+  margin-bottom: 16px;
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 16px;
+  color: hsl(165, 100%, 15%);
+}
+
+.content-container {
+  width: 100%;
+}
+
+.borrow-container {
+  border: solid hsl(165, 100%, 15%) 4px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.borrow-container > form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.borrow-container > h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 32px;
+  margin-top: 16px;
+  color: hsl(164, 50%, 90%);
+}
+
+#search-form > input {
+  font-size: 1rem;
+  padding: 8px;
+  border: hsl(10, 100%, 80%) 2px solid;
+  margin: 0;
+  margin-right: 16px;
+  color: hsl(165, 100%, 15%);
+}
+
+#search-form > button {
+  font-size: 1rem;
+  padding: 8px 16px 8px 16px;
+  background: hsl(10, 100%, 80%);
+  border: hsl(10, 100%, 80%) 2px solid;
+  color: white;
+  cursor: pointer;
+  margin-right: 16px;
+}
+
+.table-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+#items-table {
+  width: 100%;
+}
+
+#items-table > tr {
+  display: flex;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+#items-table > tr > td {
+  display: flex;
+  justify-content: center;
+  width: 33%;
+}
+
+#items-table > tr > th {
+  display: flex;
+  justify-content: center;
+  width: 33%;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+#items-table > tr > button {
+  display: flex;
+  justify-content: center;
+  width: 33%;
+  font-size: 1rem;
+  padding: 8px 16px 8px 16px;
+  background: hsl(10, 100%, 80%);
+  border: hsl(10, 100%, 80%) 2px solid;
+  color: white;
+  cursor: pointer;
+  margin-right: 16px;
+}
+
+.submit-item-container {
+  border: solid hsl(165, 100%, 15%) 4px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.submit-item-container > h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 32px;
+  margin-top: 16px;
+  color: hsl(164, 50%, 90%);
+}
+
+#submit-item-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: space-between;
+}
+
+#submit-item-form > input {
+  font-size: 1rem;
+  padding: 8px;
+  border: hsl(10, 100%, 80%) 2px solid;
+  margin: 0;
+  margin: auto;
+  margin-bottom: 16px;
+  color: hsl(165, 100%, 15%);
+}
+
+#lender-email,
+#lender-name,
+#item-name,
+#item-desc {
+  width: 60%;
+}
+
+#submit-item-form > button {
+  display: flex;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 8px 16px 8px 16px;
+  background: hsl(10, 100%, 80%);
+  border: hsl(10, 100%, 80%) 2px solid;
+  color: white;
+  cursor: pointer;
+  margin: auto;
+  width: 60%;
+}
+
+.request-container {
+  border: solid hsl(165, 100%, 15%) 4px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.request-stuff {
+  display: flex;
+  justify-content: center;
+  align-items: space-between;
+}
+
+#request-form > input {
+  font-size: 1rem;
+  padding: 8px;
+  border: hsl(10, 100%, 80%) 2px solid;
+  margin: 0;
+  margin-right: 16px;
+  color: hsl(165, 100%, 15%);
+}
+
+#request-form > button {
+  font-size: 1rem;
+  padding: 8px 16px 8px 16px;
+  background: hsl(10, 100%, 80%);
+  border: hsl(10, 100%, 80%) 2px solid;
+  color: white;
+  cursor: pointer;
+  margin-right: 16px;
+}
+
+.borrow-container,
+.submit-item-container,
+.request-container {
+  margin-bottom: 16px;
+  background-color: hsl(165, 100%, 15%);
+  color: white;
+  border: solid 6px hsl(165, 50%, 70%);
 }
