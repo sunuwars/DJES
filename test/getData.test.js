@@ -14,7 +14,7 @@ tape("test get data", t => {
   runDbBuild(err => {
     t.error(err, "No Error");
     supertest(router)
-      .get("/testing")
+      .get("/populate-all")
       .expect(200)
       .end((err, res) => {
         t.error(err);
