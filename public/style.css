@@ -431,3 +431,7 @@ h3 {
 .itm-borrow-col{
   width: 15%;
 }
+
+h3 {
+  color: hsl(164, 50%, 90%);
+}

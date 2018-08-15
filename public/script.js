@@ -11,6 +11,7 @@ var submitItemBtn = document.getElementById("submit-item");
 var allItemsBtn = document.getElementById("all-items-btn");
 var nameCol = document.getElementById("name-column");
 var descCol = document.getElementById("desc-column");
+var borrowH3 = document.getElementById("borrow-item-title");
 
 function request(url, method, cb) {
   var xhr = new XMLHttpRequest();
@@ -89,9 +90,12 @@ requestBtn.addEventListener("click", function(e) {
   xhrPost.send(JSON.stringify(postData));
 });
 
-function borrow(id) {
+function borrow(id, name) {
   reqForm.classList.remove("hidden");
   itemIdInput.value = id;
+  console.log("name: ", name)
+  borrowH3.innerText = "Borrow " + name.toLowerCase();
+
 }
 
 searchBtn.addEventListener("click", function(e) {
@@ -162,7 +166,7 @@ function updateDom(err, data) {
         loanBtn.textContent = "borrow";
         loanBtn.className = 'itm-borrow-col';
         loanBtn.setAttribute("id", item.id);
-        loanBtn.setAttribute("onclick", "borrow(this.id)");
+        loanBtn.setAttribute("onclick", "borrow(this.id, " + "'" + item.name + "')");
         name.innerHTML = item.name;
         row.appendChild(name);
         row.appendChild(available);
