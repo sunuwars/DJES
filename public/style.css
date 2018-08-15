@@ -375,3 +375,44 @@ h3 {
   color: white;
   border: solid 6px hsl(165, 50%, 70%);
 }
+
+#checkbox, #srch-input-div{
+  display:flex;
+  flex-direction: column;
+}
+#search-form{
+  /* display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center; */
+  height: 39px;
+  /* very hacky solution. need to revisit */
+}
+
+#avail-label{
+  font-size: 1rem;
+  line-height: 1.4rem;
+}
+
+/* button {
+  display: flex;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 8px 16px 8px 16px;
+  background: hsl(10, 100%, 80%);
+  border: hsl(10, 100%, 80%) 2px solid;
+  color: white;
+  cursor: pointer;
+  margin: auto;
+  width: 60%;
+} */
+
+
+#srch-input-div > input {
+  font-size: 1rem;
+  padding: 8px;
+  border: hsl(10, 100%, 80%) 2px solid;
+  margin: 0;
+  margin-right: 16px;
+  color: hsl(165, 100%, 15%);
+}
