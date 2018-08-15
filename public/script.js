@@ -187,4 +187,4 @@ function updateDom(err, data) {
   }
 }
 
-request("/testing", "GET", updateDom);
+request("/populate-all", "GET", updateDom);
