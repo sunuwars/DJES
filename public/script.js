@@ -128,29 +128,36 @@ function updateDom(err, data) {
 
     //add headers
     var nameHeader = document.createElement("th");
-    
+    var availHeader = document.createElement('th');
     var descHeader = document.createElement("th");
     var buttonHeader = document.createElement("th");
     var row = document.createElement("tr");
 
     nameHeader.className = 'itm-name-col';
+    availHeader.className = 'itm-avail-col';
     descHeader.className = 'itm-descr-col';
     buttonHeader.className = 'itm-borrow-col';
 
     nameHeader.textContent = "Item Name";
+    availHeader.textContent = "Available";
     descHeader.textContent = "Item Description";
     buttonHeader.textContent = "Borrow";
     row.appendChild(nameHeader);
+    row.appendChild(availHeader);
     row.appendChild(descHeader);
     row.appendChild(buttonHeader);
     table.appendChild(row);
 
     if (items.length > 0) {
       items.forEach(function(item) {
+        console.log(item)
         // adding our item names
         var row = document.createElement("tr");
         var name = document.createElement("td");
         name.className = 'itm-name-col';
+        var available = document.createElement('td');
+        available.className = 'itm-avail-col';
+        available.innerHTML = item.on_loan;
         var loanBtn = document.createElement("button");
         loanBtn.textContent = "borrow";
         loanBtn.className = 'itm-borrow-col';
@@ -158,7 +165,7 @@ function updateDom(err, data) {
         loanBtn.setAttribute("onclick", "borrow(this.id)");
         name.innerHTML = item.name;
         row.appendChild(name);
-
+        row.appendChild(available);
         // adding our item descriptions
         var description = document.createElement("td");
         description.className = 'itm-descr-col';
