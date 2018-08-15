@@ -142,9 +142,9 @@ function updateDom(err, data) {
     descHeader.className = 'itm-descr-col';
     buttonHeader.className = 'itm-borrow-col';
 
-    nameHeader.textContent = "Item Name";
+    nameHeader.textContent = "Item";
     availHeader.textContent = "Available";
-    descHeader.textContent = "Item Description";
+    descHeader.textContent = "Description";
     buttonHeader.textContent = "Borrow";
     row.appendChild(nameHeader);
     row.appendChild(availHeader);
