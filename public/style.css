@@ -255,21 +255,23 @@ h3 {
 #items-table > tr > td {
   display: flex;
   justify-content: center;
-  width: 33%;
+  /* width: 33%; */
 }
 
 #items-table > tr > th {
   display: flex;
   justify-content: center;
-  width: 33%;
+  /* width: 33%; */
   font-size: 1.5rem;
   font-weight: 700;
 }
 
+
+
 #items-table > tr > button {
   display: flex;
   justify-content: center;
-  width: 33%;
+  /* width: 33%; */
   font-size: 1rem;
   padding: 8px 16px 8px 16px;
   background: hsl(10, 100%, 80%);
@@ -415,4 +417,17 @@ h3 {
   margin: 0;
   margin-right: 16px;
   color: hsl(165, 100%, 15%);
+}
+
+.itm-name-col {
+  width: 25%;
+}
+.itm-avail-col{
+  width: 10%;
+}
+.itm-descr-col{
+  width: 50%;
+}
+.itm-borrow-col{
+  width: 15%;
 }

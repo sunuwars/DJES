@@ -128,9 +128,14 @@ function updateDom(err, data) {
 
     //add headers
     var nameHeader = document.createElement("th");
+    
     var descHeader = document.createElement("th");
     var buttonHeader = document.createElement("th");
     var row = document.createElement("tr");
+
+    nameHeader.className = 'itm-name-col';
+    descHeader.className = 'itm-descr-col';
+    buttonHeader.className = 'itm-borrow-col';
 
     nameHeader.textContent = "Item Name";
     descHeader.textContent = "Item Description";
@@ -145,8 +150,10 @@ function updateDom(err, data) {
         // adding our item names
         var row = document.createElement("tr");
         var name = document.createElement("td");
+        name.className = 'itm-name-col';
         var loanBtn = document.createElement("button");
         loanBtn.textContent = "borrow";
+        loanBtn.className = 'itm-borrow-col';
         loanBtn.setAttribute("id", item.id);
         loanBtn.setAttribute("onclick", "borrow(this.id)");
         name.innerHTML = item.name;
@@ -154,6 +161,7 @@ function updateDom(err, data) {
 
         // adding our item descriptions
         var description = document.createElement("td");
+        description.className = 'itm-descr-col';
         description.innerHTML = item.description;
         row.appendChild(description);
         row.appendChild(loanBtn);
