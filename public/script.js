@@ -11,6 +11,7 @@ var submitItemBtn = document.getElementById("submit-item");
 var allItemsBtn = document.getElementById("all-items-btn");
 var nameCol = document.getElementById("name-column");
 var descCol = document.getElementById("desc-column");
+var borrowH3 = document.getElementById("borrow-item-title");
 
 function request(url, method, cb) {
   var xhr = new XMLHttpRequest();
@@ -89,9 +90,12 @@ requestBtn.addEventListener("click", function(e) {
   xhrPost.send(JSON.stringify(postData));
 });
 
-function borrow(id) {
+function borrow(id, name) {
   reqForm.classList.remove("hidden");
   itemIdInput.value = id;
+  console.log("name: ", name)
+  borrowH3.innerText = "Borrow " + name.toLowerCase();
+
 }
 
 searchBtn.addEventListener("click", function(e) {
@@ -128,32 +132,47 @@ function updateDom(err, data) {
 
     //add headers
     var nameHeader = document.createElement("th");
+    var availHeader = document.createElement('th');
     var descHeader = document.createElement("th");
     var buttonHeader = document.createElement("th");
     var row = document.createElement("tr");
 
-    nameHeader.textContent = "Item Name";
-    descHeader.textContent = "Item Description";
+    nameHeader.className = 'itm-name-col';
+    availHeader.className = 'itm-avail-col';
+    descHeader.className = 'itm-descr-col';
+    buttonHeader.className = 'itm-borrow-col';
+
+    nameHeader.textContent = "Item";
+    availHeader.textContent = "Available";
+    descHeader.textContent = "Description";
     buttonHeader.textContent = "Borrow";
     row.appendChild(nameHeader);
+    row.appendChild(availHeader);
     row.appendChild(descHeader);
     row.appendChild(buttonHeader);
     table.appendChild(row);
 
     if (items.length > 0) {
       items.forEach(function(item) {
+        console.log(item)
         // adding our item names
         var row = document.createElement("tr");
         var name = document.createElement("td");
+        name.className = 'itm-name-col';
+        var available = document.createElement('td');
+        available.className = 'itm-avail-col';
+        available.innerHTML = item.on_loan;
         var loanBtn = document.createElement("button");
         loanBtn.textContent = "borrow";
+        loanBtn.className = 'itm-borrow-col';
         loanBtn.setAttribute("id", item.id);
-        loanBtn.setAttribute("onclick", "borrow(this.id)");
+        loanBtn.setAttribute("onclick", "borrow(this.id, " + "'" + item.name + "')");
         name.innerHTML = item.name;
         row.appendChild(name);
-
+        row.appendChild(available);
         // adding our item descriptions
         var description = document.createElement("td");
+        description.className = 'itm-descr-col';
         description.innerHTML = item.description;
         row.appendChild(description);
         row.appendChild(loanBtn);

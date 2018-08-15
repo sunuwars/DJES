@@ -21,16 +21,22 @@
     <section class="borrow-container">
       <h3>Would you like to borrow anything?</h3>
       <form id="search-form">
+        <div id="srch-input-div">
         <input type="text" id="search-input" placeholder="Enter your search here..." autocomplete="off">
+        <label id="avail-label"><input type="checkbox" id="search-avail"> available only</label>
+        </div>
         <button id="search-btn">search</button>
+        
         <button id="all-items-btn">all items</button>
+        
+
       </form>
       <section class="table-container">
         <table id="items-table">
-          <tr>
+          <!-- <tr>
             <th id="name-column">Item Name</th>
             <th id="desc-column">Item Description</th>
-          </tr>
+          </tr> -->
         </table>
       </section>
     </section>
@@ -46,6 +52,7 @@
       </form>
     </section>
     <section class="request-container">
+      <h3 id="borrow-item-title">Item to borrow</h3>
       <form id="request-form" class="hidden request-stuff">
         <input type="text" id="name-input" placeholder="Enter your name here..." autocomplete="off" required>
         <input type="email" id="email-input" placeholder="Enter your email here..." autocomplete="off" required>
