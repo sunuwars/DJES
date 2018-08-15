@@ -68,12 +68,10 @@ function updateStyle(hex) {
   var css = document.styleSheets[0];
   var RGB = hexToRgb(hex);
   var baseHSL = rgbToHsl(RGB.r, RGB.g, RGB.b);
-  var modifiedHSL = [baseHSL[0] + 10, baseHSL[1], baseHSL[2]]
+  var modifiedHSL = [baseHSL[0] + 50, baseHSL[1], baseHSL[2]]
   console.log("RGB: ", RGB);
   console.log("baseHSL: ", baseHSL);
   console.log("modifiedHSL: ", modifiedHSL);
-
-  // hsl(10, 100%, 50%)  
 
   console.log()
 
