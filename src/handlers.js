@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const {postData, insertData} = require("./queries/postData");
+const { postData, insertData } = require("./queries/postData");
 const getData = require("./queries/getData");
 const runDbBuild = require("./database/db_build");
 
@@ -62,7 +62,7 @@ const handlers = {
       } else {
         res.writeHead(200, "Content-type: application/json");
         res.end(JSON.stringify(result));
-       }
+      }
     });
   },
   requestItem(req, res) {
@@ -74,7 +74,6 @@ const handlers = {
         })
         .on("end", () => {
           const parsedData = JSON.parse(data);
-          console.log(parsedData.name, parsedData.email, parsedData.item);
           postData(
             parsedData.name,
             parsedData.email,
@@ -108,37 +107,38 @@ const handlers = {
   addItem(req, res) {
     // SQL query: Add user
     // SQL query: Add item from that user
+    console.log("addItem reached");
     if (req.method === "POST") {
       let data = "";
-      req.on("data", chunk => {
-        data += chunk;
-      })
-      .on("end", () => {
-        const parsedData = JSON.parse(data);
-        console.log("PARSED DATA: ", parsedData);
-        // Previously used parsedData.data.name etc below
-        insertData(
-          parsedData.name,
-          parsedData.email,
-          parsedData.itemName,
-          parsedData.itemDesc, 
-          parsedData.favColour,
-          err => {
-            if (err) {
-              res.writeHead(500, { "Content-Type": "text/html" });
-              res.end("<h1>Server Error</h1>");
-              console.log("insertdata error");
-            } else {
-              //need to change location?
-              res.writeHead(302, { Location: "/success" });
-              res.end();
+      req
+        .on("data", chunk => {
+          data += chunk;
+        })
+        .on("end", () => {
+          const parsedData = JSON.parse(data);
+          console.log("got data");
+          // Previously used parsedData.data.name etc below
+          insertData(
+            parsedData.name,
+            parsedData.email,
+            parsedData.itemName,
+            parsedData.itemDesc,
+            parsedData.favColour,
+            err => {
+              if (err) {
+                res.writeHead(500, { "Content-Type": "text/html" });
+                res.end("<h1>Server Error</h1>");
+                console.log("insertdata error");
+              } else {
+                //need to change location?
+                console.log("else, should be 302");
+                res.writeHead(302, { Location: "/success" });
+                res.end();
+              }
             }
-          }
-        )
-      })
+          );
+        });
     }
-
-
   },
 
   testData: function(req, response) {
@@ -148,17 +148,14 @@ const handlers = {
     //     response.end("<h1>Sorry, there was a problem getting the users</h1>");
     //     console.log(err);
     //   } else {
-        getData("", (err, res) => {
-          if (err) {
-            response.writeHead(500, "Content-Type:text/html");
-            response.end(
-              "<h1>Sorry, there was a problem getting the users</h1>"
-            );
-            console.log(err);
-          }
-          response.writeHead(200, { "Content-Type": "application/json" });
-          response.end(JSON.stringify(res));
-        });
+    getData("", (err, res) => {
+      if (err) {
+        response.writeHead(500, "Content-Type:text/html");
+        response.end("<h1>Sorry, there was a problem getting the users</h1>");
+      }
+      response.writeHead(200, { "Content-Type": "application/json" });
+      response.end(JSON.stringify(res));
+    });
     //   }
     // });
   }
