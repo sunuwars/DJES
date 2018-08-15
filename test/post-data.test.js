@@ -23,7 +23,7 @@ test("Post request returns a status code of 302", t => {
     };
     supertest(router)
       .post("/request-item")
-      .send({ data })
+      .send(data)
       .expect(302)
       .end((err, res) => {
         t.error(err);
@@ -36,7 +36,6 @@ test("Post request returns a status code of 302", t => {
 test("Post request returns a status code of 302", t => {
   runDbBuild((err, res) => {
     t.error(err, "No error");
-    console.log("res: ", res)
     let data = {
       name: "anon",
       email: "sang@gmail.com",
@@ -45,7 +44,7 @@ test("Post request returns a status code of 302", t => {
     };
     supertest(router)
       .post("/add-item")
-      .send({ data })
+      .send(data)
       .expect(302)
       .end((err, res) => {
         t.error(err);
