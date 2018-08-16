@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { postData, checkUser, insertData } = require("./queries/postData");
-const {getData, getPassword} = require("./queries/getData");
+const { getData, getPassword } = require("./queries/getData");
 const runDbBuild = require("./database/db_build");
 const passwords = require("./passwords");
 const querystring = require("querystring");
@@ -22,25 +22,24 @@ const contentType = {
   ".gif": "image/gif"
 };
 
-const sessionIDGen = function(length = 24){
+const sessionIDGen = function(length = 24) {
   return new Promise((resolve, reject) => {
-      crypto.randomBytes(48, (err, buffer) => {
-          if (err) {
-              reject(err);
-          } else {
-              resolve (buffer.toString("hex"))
-          }
-      })
-  })
-}
+    crypto.randomBytes(48, (err, buffer) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(buffer.toString("hex"));
+      }
+    });
+  });
+};
 
 const handlers = {
   collectData(req, cb) {
     let data = "";
-   
+
     req
       .on("data", chunk => {
-        
         data += chunk;
       })
       .on("error", err => {
@@ -52,16 +51,40 @@ const handlers = {
   },
 
   home(req, res) {
-    fs.readFile(buildPath("index.html"), (err, file) => {
-      if (err) {
-        res.writeHead(500, { "Content-Type": "text/html" });
-        res.end("<h1>Server Error</h1>");
-        console.log("home error");
-      } else {
-        res.writeHead(200, { "Content-Type": "text/html" });
-        res.end(file);
-      }
-    });
+    if (req.headers.cookie) {
+      const sessionId = req.headers.cookie.split("=")[1];
+      passwords.checkSession(sessionId, (err, rows) => {
+        if (err) {
+          res.writeHead(500, { "Content-Type": "text/html" });
+          res.end("<h1>Server Error</h1>");
+        } else if (rows.length !== 1) {
+          res.writeHead(401, { "Content-Type": "text/html" });
+          res.end("<h1>Fuck you, you fucking fuck</h1>");
+        } else {
+          fs.readFile(buildPath("index-loggedin.html"), (err, file) => {
+            if (err) {
+              res.writeHead(500, { "Content-Type": "text/html" });
+              res.end("<h1>Server Error</h1>");
+              console.log("home error");
+            } else {
+              res.writeHead(200, { "Content-Type": "text/html" });
+              res.end(file);
+            }
+          });
+        }
+      });
+    } else {
+      fs.readFile(buildPath("index.html"), (err, file) => {
+        if (err) {
+          res.writeHead(500, { "Content-Type": "text/html" });
+          res.end("<h1>Server Error</h1>");
+          console.log("home error");
+        } else {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.end(file);
+        }
+      });
+    }
   },
 
   public(req, res, endpoint) {
@@ -80,43 +103,53 @@ const handlers = {
   },
   login(req, res) {
     handlers.collectData(req, (err, data) => {
-      console.log("collected data", data);
-    if (err) {
-      res.writeHead(500, { "Content-Type": "text/html" });
-      res.end("<h1>Server Error</h1>");
-    } else if(
-      !data['login-email'] ||
-      !data['login-password']
-    ) {
+      if (err) {
         res.writeHead(500, { "Content-Type": "text/html" });
         res.end("<h1>Server Error</h1>");
-    } else {
-      console.log('DATA=',data);
-      const email = data['login-email'].replace(/[^a-z0-9._\-@+]/gi, "");
-
-      const password = data['login-password'];
-      //write function
-      const passwordMatch = getPassword(email, (err, result) =>{ console.log('GETPASSWORD');
-        if(err){
-          res.writeHead(500, { "Content-Type": "text/html" });
-          return res.end("<h1>Server Error</h1>");
-        }
-        console.log('HERE',result);
-        passwords.comparePassword(password, result[0].password_hash, (err,res) => {
-          if(err){
-            return err;
+      } else if (!data["login-email"] || !data["login-password"]) {
+        res.writeHead(500, { "Content-Type": "text/html" });
+        res.end("<h1>Server Error</h1>");
+      } else {
+        const email = data["login-email"].replace(/[^a-z0-9._\-@+]/gi, "");
+        const password = data["login-password"];
+        getPassword(email, (err, result) => {
+          if (err) {
+            res.writeHead(500, { "Content-Type": "text/html" });
+            return res.end("<h1>Server Error</h1>");
           }
-          console.log('RESPONSE IS=',res);
-          return res;
-        })
-
-        
-        
-      });
-      console.log('PASSWORD MATCH ', passwordMatch);
-    }
-
-    } )
+          passwords.comparePassword(
+            password,
+            result[0].password_hash,
+            (err, result) => {
+              if (err) {
+                return err;
+              }
+              if (result) {
+                sessionIDGen().then(sessionID => {
+                  passwords.storeSession(
+                    sessionID,
+                    email,
+                    (err, result, sssionID) => {
+                      console.log("Store Session func reached");
+                      if (err) {
+                        res.writeHead(500, { "Content-Type": "text/html" });
+                        res.end("<h1>Server Error in storeSession func</h1>");
+                      } else {
+                        res.writeHead(200, {
+                          "Content-Type": "text/html",
+                          "Set-Cookie": `session_id=${sssionID}; HttpOnly; Max-Age=43200`
+                        });
+                        res.end("<h1>Login session added</h1>");
+                      }
+                    }
+                  );
+                });
+              }
+            }
+          );
+        });
+      }
+    });
   },
 
   register(req, res) {
@@ -186,21 +219,19 @@ const handlers = {
                           res.writeHead(302, { Location: "/","Content-Type": "text/html", "Set-Cookie": `session_id=${sssionID}; HttpOnly; Max-Age=43200` }) 
                           res.end()
                         }
-                      } 
-                    )}
-                  )
-                  // .then(
-                  //   (sessID) => { 
-                  //     res.writeHead(200, { "Content-Type": "text/html", "Set-Cookie": `session_id='${sessID}'` }) 
-                  //     res.end("<h1>User added to database :)</h1>")
-                  //   } 
-                  // )
-                  // .then()
+                      }
+                      );
+                    });
+                    // .then(
+                    //   (sessID) => {
+                    //     res.writeHead(200, { "Content-Type": "text/html", "Set-Cookie": `session_id='${sessID}'` })
+                    //     res.end("<h1>User added to database :)</h1>")
+                    //   }
+                    // )
+                    // .then()
                     // create cookie
                     // store session data
                     // all that jazz
-                    
-                    
                   }
                 );
               });
