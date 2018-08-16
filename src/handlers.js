@@ -59,7 +59,7 @@ const handlers = {
           res.end("<h1>Server Error</h1>");
         } else if (rows.length !== 1) {
           res.writeHead(401, { "Content-Type": "text/html" });
-          res.end("<h1>Fuck you, you fucking fuck</h1>");
+          res.end("<h1>Forbidden Access</h1>");
         } else {
           fs.readFile(buildPath("index-loggedin.html"), (err, file) => {
             if (err) {
@@ -135,11 +135,11 @@ const handlers = {
                         res.writeHead(500, { "Content-Type": "text/html" });
                         res.end("<h1>Server Error in storeSession func</h1>");
                       } else {
-                        res.writeHead(200, {
-                          "Content-Type": "text/html",
+                        res.writeHead(302, {
+                          "Location": "/",
                           "Set-Cookie": `session_id=${sssionID}; HttpOnly; Max-Age=43200`
                         });
-                        res.end("<h1>Login session added</h1>");
+                        res.end();
                       }
                     }
                   );
