@@ -281,7 +281,7 @@ regForm.addEventListener(
       }
     }
   }
-});
+);
 
 regEmail.addEventListener("focusout", function(e) {
   if (!regEmail.validity.valid) {
