@@ -203,25 +203,23 @@ const handlers = {
                     }
 
                     // Create session token!
-                    sessionIDGen().then(sessionID => {
-                      passwords.storeSession(
-                        sessionID,
-                        email,
-                        (err, result, sssionID) => {
-                          console.log("Store Session func reached");
-                          if (err) {
-                            res.writeHead(500, { "Content-Type": "text/html" });
-                            res.end(
-                              "<h1>Server Error in storeSession func</h1>"
-                            );
-                          } else {
-                            res.writeHead(200, {
-                              "Content-Type": "text/html",
-                              "Set-Cookie": `session_id=${sssionID}; HttpOnly; Max-Age=43200`
-                            });
-                            res.end("<h1>User added to database :)</h1>");
-                          }
+                    sessionIDGen()
+                    .then(
+                      sessionID => {
+                        passwords.storeSession(
+                      sessionID,
+                      email, 
+                      (err, result, sssionID) => {
+                        console.log("Store Session func reached")
+                        if (err) {console.log('HERE');
+                          console.log(err);
+                          res.writeHead(500, { "Content-Type": "text/html" });
+                          res.end("<h1>Server Error in storeSession func</h1>");
+                        } else {
+                          res.writeHead(302, { Location: "/","Content-Type": "text/html", "Set-Cookie": `session_id=${sssionID}; HttpOnly; Max-Age=43200` }) 
+                          res.end()
                         }
+                      }
                       );
                     });
                     // .then(
