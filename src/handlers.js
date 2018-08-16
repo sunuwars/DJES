@@ -75,7 +75,6 @@ const handlers = {
       !data['login-email'] ||
       !data['login-password']
     ) {
-        console.log('DATA MISSING');
         res.writeHead(500, { "Content-Type": "text/html" });
         res.end("<h1>Server Error</h1>");
     } else {
@@ -84,13 +83,12 @@ const handlers = {
 
       const password = data['login-password'];
       //write function
-      getPassword(email, (err, result) =>{ console.log('GETPASSWORD');
+      const passwordMatch = getPassword(email, (err, result) =>{ console.log('GETPASSWORD');
         if(err){
           res.writeHead(500, { "Content-Type": "text/html" });
           return res.end("<h1>Server Error</h1>");
         }
         console.log('HERE',result);
-        console.log(result[0].password_hash);
         passwords.comparePassword(password, result[0].password_hash, (err,res) => {
           if(err){
             return err;
@@ -101,7 +99,8 @@ const handlers = {
 
         
         
-      })
+      });
+      console.log('PASSWORD MATCH ', passwordMatch);
     }
 
     } )
@@ -120,7 +119,6 @@ const handlers = {
           !data["reg-password"] ||
           !data["fav-colour"]
         ) {
-          console.log("data missing");
           console.log("data: ", data);
           res.writeHead(500, { "Content-Type": "text/html" });
           res.end("<h1>Server Error</h1>");
