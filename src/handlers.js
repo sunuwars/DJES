@@ -4,7 +4,8 @@ const { postData, checkUser, insertData } = require("./queries/postData");
 const getData = require("./queries/getData");
 const runDbBuild = require("./database/db_build");
 const passwords = require("./passwords");
-const querystring = require("querystring")
+const querystring = require("querystring");
+const crypto = require("crypto");
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
@@ -20,6 +21,18 @@ const contentType = {
   ".png": "image/png",
   ".gif": "image/gif"
 };
+
+const sessionIDGen = function(length = 24){
+  return new Promise((resolve, reject) => {
+      crypto.randomBytes(48, (err, buffer) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve (buffer.toString("hex"))
+          }
+      })
+  })
+}
 
 const handlers = {
   collectData(req, cb) {
@@ -98,14 +111,14 @@ const handlers = {
             if (err) {
               res.writeHead(500, { "Content-Type": "text/html" });
               res.end("<h1>Server Error</h1>");
-            } else if (res) {
+            } else if (result) {
               res.writeHead(200, { "Content-Type": "text/html" });
               res.end("<h1>Email already exists</h1>");
             } else {
               passwords.hashPassword(password, (err, hashedPassword) => {
                 if (err) {
                   res.writeHead(500, { "Content-Type": "text/html" });
-                  res.end("<h1>Server Error</h1>");
+                  res.end("<h1>Hashed pw error</h1>");
                 }
                 passwords.storePassword(
                   name,
@@ -115,8 +128,26 @@ const handlers = {
                   (err, result) => {
                     if (err) {
                       res.writeHead(500, { "Content-Type": "text/html" });
-                      res.end("<h1>Server Error</h1>");
+                      res.end("<h1>Server Error in storepassword func</h1>");
                     }
+
+                    // Create session token!
+                    sessionIDGen()
+                    .then(
+                      sessionID => {
+                        passwords.storeSession(
+                      sessionID,
+                      email, 
+                      (err, result) => {
+                        console.log("Store Session func reached")
+                        if (err) {
+                          res.writeHead(500, { "Content-Type": "text/html" });
+                          res.end("<h1>Server Error in storeSession func</h1>");
+                        }
+                      }
+                    )}
+                  )
+
                     // create cookie
                     // store session data
                     // all that jazz

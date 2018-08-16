@@ -17,11 +17,25 @@ const passwords = {
     dbConnection.query(
       `INSERT INTO users (name, email, fav_colour, password_hash) VALUES ($1, $2, $3, $4)`,
       [name, email, favColour, hashedPassword],
+      // `INSERT INTO users (name, email, fav_colour, password_hash) VALUES ('${name}', '${email}', '${favColour}', '${hashedPassword}')`,
+      // `INSERT INTO users (name, email, fav_colour, password_hash) VALUES ('Joe', 'Joe@dom.dom', '0947dd', '$2b$12$9KMMDuR2Le5n1.tl1LYqOuVCRXjwpIRfj0RafQa/mppqgNTD7.P8u')`,
       (err, res) => {
         if (err) return cb(err);
         return cb(null, res);
       }
     );
+  },
+
+  storeSession: (sessionID, email, cb) => {
+    console.log("session ID: ", sessionID)
+    dbConnection.query(
+      `INSERT INTO active_sessions (session_id, email) VALUES ($1, $2)`,
+      [sessionID, email],
+      (err, res) => {
+        if(err) return cb(err);
+        return cb(null, res);
+      }
+    )
   }
 
   // takes in hash of password, compares against hash from database
