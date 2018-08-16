@@ -15,6 +15,7 @@ const router = (req, res) => {
   } else if (endpoint === "add-item") {
     handlers.addItem(req, res, endpoint); // some arguments
   } else if (endpoint === "populate-all") {
+    console.log('populate')
     handlers.testData(req, res);
   } else if (endpoint === "success") {
     handlers.success(req, res);

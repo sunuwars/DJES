@@ -338,6 +338,7 @@ const handlers = {
     //     console.log(err);
     //   } else {
     getData("", (err, res) => {
+      console.log("reached again")
       if (err) {
         response.writeHead(500, "Content-Type:text/html");
         response.end("<h1>Sorry, there was a problem getting the users</h1>");
