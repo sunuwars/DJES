@@ -305,7 +305,7 @@ h3 {
 }
 
 #submit-item-form > input,
-#reg-form > input {
+.reg-form-input {
   font-size: 1rem;
   padding: 8px;
   border: hsl(10, 100%, 80%) 2px solid;
@@ -439,14 +439,21 @@ h3 {
 
 /* INPUT VALIDATION  */
 
-/* input:invalid {
+/* input[type="email"]:invalid {
   border: 2px dashed red;
-}
+  outline: none;
+  background-color: lightpink;
+} */
 
-*/
-
-input:focus:invalid {
+/* input[type="email"]:placeholder-shown {
   border: hsl(10, 100%, 80%) 2px solid;
+  background-color: white;
+} */
+
+.invalid-input {
+  border: 2px dashed red;
+  outline: none;
+  background-color: lightpink;
 }
 
 .error {
@@ -462,4 +469,9 @@ input:focus:invalid {
 
 .passive {
   position: absolute;
+}
+
+.incorrect-field {
+  border: solid 2px red;
+  background-color: lightpink;
 }
