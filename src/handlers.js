@@ -51,16 +51,40 @@ const handlers = {
   },
 
   home(req, res) {
-    fs.readFile(buildPath("index.html"), (err, file) => {
-      if (err) {
-        res.writeHead(500, { "Content-Type": "text/html" });
-        res.end("<h1>Server Error</h1>");
-        console.log("home error");
-      } else {
-        res.writeHead(200, { "Content-Type": "text/html" });
-        res.end(file);
-      }
-    });
+    if (req.headers.cookie) {
+      const sessionId = req.headers.cookie.split("=")[1];
+      passwords.checkSession(sessionId, (err, rows) => {
+        if (err) {
+          res.writeHead(500, { "Content-Type": "text/html" });
+          res.end("<h1>Server Error</h1>");
+        } else if (rows.length !== 1) {
+          res.writeHead(401, { "Content-Type": "text/html" });
+          res.end("<h1>Fuck you, you fucking fuck</h1>");
+        } else {
+          fs.readFile(buildPath("index-loggedin.html"), (err, file) => {
+            if (err) {
+              res.writeHead(500, { "Content-Type": "text/html" });
+              res.end("<h1>Server Error</h1>");
+              console.log("home error");
+            } else {
+              res.writeHead(200, { "Content-Type": "text/html" });
+              res.end(file);
+            }
+          });
+        }
+      });
+    } else {
+      fs.readFile(buildPath("index.html"), (err, file) => {
+        if (err) {
+          res.writeHead(500, { "Content-Type": "text/html" });
+          res.end("<h1>Server Error</h1>");
+          console.log("home error");
+        } else {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.end(file);
+        }
+      });
+    }
   },
 
   public(req, res, endpoint) {
@@ -79,7 +103,6 @@ const handlers = {
   },
   login(req, res) {
     handlers.collectData(req, (err, data) => {
-      console.log("collected data", data);
       if (err) {
         res.writeHead(500, { "Content-Type": "text/html" });
         res.end("<h1>Server Error</h1>");
@@ -87,31 +110,44 @@ const handlers = {
         res.writeHead(500, { "Content-Type": "text/html" });
         res.end("<h1>Server Error</h1>");
       } else {
-        console.log("DATA=", data);
         const email = data["login-email"].replace(/[^a-z0-9._\-@+]/gi, "");
-
         const password = data["login-password"];
-        //write function
-        const passwordMatch = getPassword(email, (err, result) => {
-          console.log("GETPASSWORD");
+        getPassword(email, (err, result) => {
           if (err) {
             res.writeHead(500, { "Content-Type": "text/html" });
             return res.end("<h1>Server Error</h1>");
           }
-          console.log("HERE", result);
           passwords.comparePassword(
             password,
             result[0].password_hash,
-            (err, res) => {
+            (err, result) => {
               if (err) {
                 return err;
               }
-              console.log("RESPONSE IS=", res);
-              return res;
+              if (result) {
+                sessionIDGen().then(sessionID => {
+                  passwords.storeSession(
+                    sessionID,
+                    email,
+                    (err, result, sssionID) => {
+                      console.log("Store Session func reached");
+                      if (err) {
+                        res.writeHead(500, { "Content-Type": "text/html" });
+                        res.end("<h1>Server Error in storeSession func</h1>");
+                      } else {
+                        res.writeHead(200, {
+                          "Content-Type": "text/html",
+                          "Set-Cookie": `session_id=${sssionID}; HttpOnly; Max-Age=43200`
+                        });
+                        res.end("<h1>Login session added</h1>");
+                      }
+                    }
+                  );
+                });
+              }
             }
           );
         });
-        console.log("PASSWORD MATCH ", passwordMatch);
       }
     });
   },

@@ -13,12 +13,12 @@ const passwords = {
   },
 
   comparePassword: (plaintext, hash, cb) => {
-    bcrypt.compare(plaintext, hash , (err, res) => {
-      if(err){
+    bcrypt.compare(plaintext, hash, (err, res) => {
+      if (err) {
         return cb(err);
       }
       return cb(null, res);
-    })
+    });
   },
 
   // store hash in database
@@ -36,15 +36,41 @@ const passwords = {
   },
 
   storeSession: (sessionID, email, cb) => {
-    console.log("session ID: ", sessionID)
+    console.log("session ID: ", sessionID);
+    passwords.deletePreviousSession(email, (err, res) => {
+      if (err) return cb(err);
+      dbConnection.query(
+        `INSERT INTO active_sessions (session_id, email) VALUES ($1, $2)`,
+        [sessionID, email],
+        (err, res) => {
+          if (err) return cb(err);
+          return cb(null, res, sessionID);
+        }
+      );
+    });
+  },
+
+  deletePreviousSession: (email, cb) => {
     dbConnection.query(
-      `INSERT INTO active_sessions (session_id, email) VALUES ($1, $2)`,
-      [sessionID, email],
+      `DELETE FROM active_sessions WHERE email=$1`,
+      [email],
       (err, res) => {
-        if(err) return cb(err);
-        return cb(null, res, sessionID);
+        if (err) return cb(err);
+        return cb(null, res);
       }
-    )
+    );
+  },
+
+  checkSession: (sessionId, cb) => {
+    dbConnection.query(
+      `SELECT session_id FROM active_sessions WHERE session_id=$1`,
+      [sessionId],
+      (err, res) => {
+        console.log(res);
+        if (err) return cb(err);
+        return cb(null, res.rows);
+      }
+    );
   }
 
   // takes in hash of password, compares against hash from database
