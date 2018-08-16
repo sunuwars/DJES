@@ -307,4 +307,24 @@ confirmPassword.addEventListener("focusout", function(e) {
   }
 });
 
+const submitLogin = document.getElementById('submit-login');
+const emailLogin = document.getElementById('login-email');
+const psdLogin = document.getElementById('login-password');
+const error1 = document.getElementById('error1');
+
+emailLogin.addEventListener("focusout", function(e) {
+  console.log('HERE')
+  if (!emailLogin.validity.valid) { //console.log('email=',emailLogin.value);console.log('here')
+    error1.innerHTML = "Please enter a valid email address";
+    error1.className = "error";
+  document.getElementById('login-email').classList.add("invalid-input");
+  console.log(emailLogin.classList)
+  } else if (emailLogin.validity.valid) {
+    emailLogin.classList.remove("invalid-input");
+    error1.classList.remove("error");
+
+  }
+});
+
+
 request("/populate-all", "GET", updateDom);
