@@ -148,6 +148,19 @@ body {
   display: none;
 }
 
+nav {
+  position: fixed;
+  height: 48px;
+  background-color: hsl(10, 100%, 80%);
+  width: 100vw;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px;
+  padding-right: 128px;
+  font-family: "Raleway", sans-serif;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -157,6 +170,7 @@ main {
   /* height: 100vh; */
   margin: 0 128px 0 128px;
   padding: 0;
+  padding-top: 48px;
 }
 
 header {
@@ -188,6 +202,10 @@ h3 {
   text-align: center;
   margin-bottom: 16px;
   color: hsl(165, 100%, 15%);
+}
+
+header > h3 {
+  color: green;
 }
 
 .content-container {
