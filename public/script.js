@@ -198,77 +198,72 @@ var regEmail = document.getElementById("reg-email");
 var password = document.getElementById("reg-password");
 var confirmPassword = document.getElementById("reg-confirm-password");
 
-regButton.addEventListener(
-  "click",
-  function(e) {
-    e.preventDefault();
-    error.classList.add("passive");
+regButton.addEventListener("click", function(e) {
+  // e.preventDefault();
+  error.classList.add("passive");
 
-    // checks that a name has been entered
-    if (regName.validity.valueMissing) {
-      error.innerHTML = "Please enter a name";
-      error.className = "error";
-      regName.classList.add("incorrect-field");
-      return;
-    }
-
-    // checks that email is valid 
-    if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
-      console.log('reached');
-      error.innerHTML = "Please enter a valid email address";
-      error.className = "error";
-      regEmail.classList.add("incorrect-field");
-      return;
-    }
-
-    // checks that anything has been entered into password fields
-    if (password.validity.valueMissing || confirmPassword.validity.valueMissing) {
-      error.innerHTML = "Please enter a password and confirm your password";
-      error.className = "error";
-      password.classList.add("incorrect-field");
-      confirmPassword.classList.add("incorrect-field");
-      return;
-    }
-
-    // check that the passwords fit the required pattern
-    if (password.validity.patternMismatch || confirmPassword.validity.patternMisMatch) {
-      error.innerHTML = "Password must contain at least eight characters, including one letter and one number";
-      error.className = "error";
-      password.classList.add("incorrect-field");
-      confirmPassword.classList.add("incorrect-field");
-      return;
-    }
-
-    if (password.value != confirmPassword.value) {
-      error.innerHTML = "Passwords do not match";
-      error.className = "error";
-      password.classList.add("incorrect-field");
-      confirmPassword.classList.add("incorrect-field");
-      return;
-    }
-
-    else {
-      error.innerHTML = "";
-      error.classList.add("passive");
-    }
-
+  // checks that a name has been entered
+  if (regName.validity.valueMissing) {
+    error.innerHTML = "Please enter a name";
+    error.className = "error";
+    regName.classList.add("incorrect-field");
+    return;
   }
-);
+
+  // checks that email is valid
+  if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
+    console.log("reached");
+    error.innerHTML = "Please enter a valid email address";
+    error.className = "error";
+    regEmail.classList.add("incorrect-field");
+    return;
+  }
+
+  // checks that anything has been entered into password fields
+  if (password.validity.valueMissing || confirmPassword.validity.valueMissing) {
+    error.innerHTML = "Please enter a password and confirm your password";
+    error.className = "error";
+    password.classList.add("incorrect-field");
+    confirmPassword.classList.add("incorrect-field");
+    return;
+  }
+
+  // check that the passwords fit the required pattern
+  if (
+    password.validity.patternMismatch ||
+    confirmPassword.validity.patternMisMatch
+  ) {
+    error.innerHTML =
+      "Password must contain at least eight characters, including one letter and one number";
+    error.className = "error";
+    password.classList.add("incorrect-field");
+    confirmPassword.classList.add("incorrect-field");
+    return;
+  }
+
+  if (password.value != confirmPassword.value) {
+    error.innerHTML = "Passwords do not match";
+    error.className = "error";
+    password.classList.add("incorrect-field");
+    confirmPassword.classList.add("incorrect-field");
+    return;
+  } else {
+    error.innerHTML = "";
+    error.classList.add("passive");
+  }
+});
 
 regForm.addEventListener("input", function(e) {
   console.log(regForm.firstChild);
 });
 
-regForm.addEventListener(
-  "input",
-  function(e) {
-    for (let i = 0; i < regForm.length; i++) {
-      if (regForm[i].validity.valid) {
-        regForm[i].classList.remove("incorrect-field");
-      }
+regForm.addEventListener("input", function(e) {
+  for (let i = 0; i < regForm.length; i++) {
+    if (regForm[i].validity.valid) {
+      regForm[i].classList.remove("incorrect-field");
     }
   }
-);
+});
 
 regEmail.addEventListener("focusout", function(e) {
   if (!regEmail.validity.valid) {
@@ -276,7 +271,7 @@ regEmail.addEventListener("focusout", function(e) {
   } else if (regEmail.validity.valid) {
     regEmail.classList.remove("invalid-input");
   }
-})
+});
 
 password.addEventListener("focusout", function(e) {
   if (password.validity.patternMismatch) {
@@ -284,7 +279,7 @@ password.addEventListener("focusout", function(e) {
   } else if (password.validity.valid) {
     password.classList.remove("invalid-input");
   }
-})
+});
 
 confirmPassword.addEventListener("focusout", function(e) {
   if (confirmPassword.validity.patternMismatch) {
@@ -292,6 +287,6 @@ confirmPassword.addEventListener("focusout", function(e) {
   } else if (confirmPassword.validity.valid) {
     confirmPassword.classList.remove("invalid-input");
   }
-})
+});
 
 request("/populate-all", "GET", updateDom);
