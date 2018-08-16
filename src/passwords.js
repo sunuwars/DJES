@@ -12,6 +12,7 @@ const passwords = {
     });
   },
 
+  // store hash in database
   storePassword: (name, email, favColour, hashedPassword, cb) => {
     dbConnection.query(
       `INSERT INTO users (name, email, fav_colour, password_hash) VALUES ($1, $2, $3, $4)`,
@@ -23,7 +24,6 @@ const passwords = {
     );
   }
 
-  // store hash in database
   // takes in hash of password, compares against hash from database
   // get user's hash from database
   // comapare two hashes

@@ -12,6 +12,28 @@ test("Initialise post-data tests", t => {
   t.end();
 });
 
+test("Registration", t => {
+  runDbBuild(err => {
+    t.error(err, "No Error");
+    let data = {
+      "reg-name": "anon",
+      "reg-email": "anon@anon.com",
+      "fav-colour": "#ffffff",
+      "reg-password": "password123"
+    };
+    supertest(router)
+      .post("/register")
+      .send(JSON.stringify(data))
+      .expect(200)
+      .end((err, res) => {
+        t.error(err);
+        t.equal(res.statusCode, 200, "registration endpoint should return 200");
+        t.end();
+      });
+  });
+});
+
+//
 // test("Post request returns a status code of 302", t => {
 //   runDbBuild((err, res) => {
 //     t.error(err, "No error");
@@ -32,7 +54,7 @@ test("Initialise post-data tests", t => {
 //       });
 //   });
 // });
-
+//
 // test("Post request returns a status code of 302", t => {
 //   runDbBuild((err, res) => {
 //     t.error(err, "No error");

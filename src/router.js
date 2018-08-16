@@ -7,6 +7,8 @@ const router = (req, res) => {
     handlers.home(req, res);
   } else if (endpoint.startsWith("search?q=")) {
     handlers.search(req, res, endpoint); // some arguments maybe
+  } else if (endpoint === "register") {
+    handlers.register(req, res);
   } else if (endpoint === "request-item") {
     handlers.requestItem(req, res);
   } else if (endpoint === "add-item") {
