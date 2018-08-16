@@ -22,34 +22,40 @@ const addLoan = (itemId, borrowerId, cb) => {
   );
 };
 
-const postData = (name, email, itemId, cb) => {
-  let borrowerId;
+const checkUser = (email, cb) => {
   dbConnection.query(
     `SELECT id FROM users WHERE email=$1`,
     [email],
     (err, res) => {
-      if (err) {
-        return cb(err);
-      }
-      if (res.rowCount > 0) {
-        borrowerId = res.rows[0].id;
-        addLoan(itemId, borrowerId, cb);
-      } else {
-        dbConnection.query(
-          `INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id`,
-          [name, email],
-          (err, res) => {
-            if (err) {
-              console.log(err);
-              return cb(err);
-            }
-            borrowerId = res.rows[0].id;
-            addLoan(itemId, borrowerId, cb);
-          }
-        );
-      }
+      if (err) return cb(err);
+      if (res.rowCount === 1) cb(null, true);
+      else cb(null, false);
     }
   );
+};
+
+const postData = (name, email, itemId, cb) => {
+  let borrowerId;
+  checkUser(email, (err, res) => {
+    if (err) return cb(err);
+    else if (res) {
+      borrowerId = res.rows[0].id;
+      addLoan(itemId, borrowerId, cb);
+    } else {
+      dbConnection.query(
+        `INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id`,
+        [name, email],
+        (err, res) => {
+          if (err) {
+            console.log(err);
+            return cb(err);
+          }
+          borrowerId = res.rows[0].id;
+          addLoan(itemId, borrowerId, cb);
+        }
+      );
+    }
+  });
 };
 
 const addItem = (name, description, lenderId, cb) => {
@@ -102,4 +108,4 @@ const insertData = (name, email, itemName, itemDesc, favColour, cb) => {
   );
 };
 
-module.exports = { postData, insertData };
+module.exports = { postData, checkUser, insertData };
