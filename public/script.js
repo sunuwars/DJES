@@ -214,7 +214,6 @@ regButton.addEventListener(
 
     // checks that email is valid 
     if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
-      console.log('reached');
       error.innerHTML = "Please enter a valid email address";
       error.className = "error";
       regEmail.classList.add("incorrect-field");
@@ -254,10 +253,6 @@ regButton.addEventListener(
 
   }
 );
-
-regForm.addEventListener("input", function(e) {
-  console.log(regForm.firstChild);
-});
 
 regForm.addEventListener(
   "input",
