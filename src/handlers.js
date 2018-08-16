@@ -100,7 +100,7 @@ const handlers = {
               res.writeHead(200, { "Content-Type": "text/html" });
               res.end("<h1>Email already exists</h1>");
             } else {
-              passwords.hashPassword(password, (err, result) => {
+              passwords.hashPassword(password, (err, hashedPassword) => {
                 if (err) {
                   res.writeHead(500, { "Content-Type": "text/html" });
                   res.end("<h1>Server Error</h1>");
@@ -109,7 +109,7 @@ const handlers = {
                   name,
                   email,
                   favColour,
-                  password,
+                  hashedPassword,
                   (err, result) => {
                     if (err) {
                       res.writeHead(500, { "Content-Type": "text/html" });
