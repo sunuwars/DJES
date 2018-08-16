@@ -480,3 +480,7 @@ h3 {
   font-size: 0.5rem;
 }
 
+#reg-form > span {
+  width: 0;
+}
+

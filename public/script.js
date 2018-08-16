@@ -201,7 +201,7 @@ var confirmPassword = document.getElementById("reg-confirm-password");
 regButton.addEventListener(
   "click",
   function(e) {
-    e.preventDefault();
+    
     error.classList.add("passive");
 
     // checks that a name has been entered
