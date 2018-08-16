@@ -4,6 +4,7 @@ const { postData, checkUser, insertData } = require("./queries/postData");
 const getData = require("./queries/getData");
 const runDbBuild = require("./database/db_build");
 const passwords = require("./passwords");
+const querystring = require("querystring")
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
@@ -33,7 +34,8 @@ const handlers = {
         cb(err);
       })
       .on("end", () => {
-        cb(null, JSON.parse(data));
+        cb(null, querystring.parse(data))
+        // cb(null, JSON.parse(data));
       });
   },
 
