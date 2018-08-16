@@ -148,6 +148,19 @@ body {
   display: none;
 }
 
+nav {
+  position: fixed;
+  height: 48px;
+  background-color: hsl(10, 100%, 80%);
+  width: 100vw;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px;
+  padding-right: 128px;
+  font-family: "Raleway", sans-serif;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -157,6 +170,7 @@ main {
   /* height: 100vh; */
   margin: 0 128px 0 128px;
   padding: 0;
+  padding-top: 48px;
 }
 
 header {
@@ -188,6 +202,10 @@ h3 {
   text-align: center;
   margin-bottom: 16px;
   color: hsl(165, 100%, 15%);
+}
+
+header > h3 {
+  color: green;
 }
 
 .content-container {
@@ -255,13 +273,13 @@ h3 {
 #items-table > tr > td {
   display: flex;
   justify-content: center;
-  width: 33%;
+  /* width: 33%; */
 }
 
 #items-table > tr > th {
   display: flex;
   justify-content: center;
-  width: 33%;
+  /* width: 33%; */
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -269,7 +287,7 @@ h3 {
 #items-table > tr > button {
   display: flex;
   justify-content: center;
-  width: 33%;
+  /* width: 33%; */
   font-size: 1rem;
   padding: 8px 16px 8px 16px;
   background: hsl(10, 100%, 80%);
@@ -296,14 +314,16 @@ h3 {
   color: hsl(164, 50%, 90%);
 }
 
-#submit-item-form {
+#submit-item-form,
+#reg-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: space-between;
 }
 
-#submit-item-form > input {
+#submit-item-form > input,
+.reg-form-input {
   font-size: 1rem;
   padding: 8px;
   border: hsl(10, 100%, 80%) 2px solid;
@@ -320,7 +340,8 @@ h3 {
   width: 60%;
 }
 
-#submit-item-form > button {
+#submit-item-form > button,
+#reg-form > button {
   display: flex;
   justify-content: center;
   font-size: 1rem;
@@ -375,3 +396,109 @@ h3 {
   color: white;
   border: solid 6px hsl(165, 50%, 70%);
 }
+
+#checkbox,
+#srch-input-div {
+  display: flex;
+  flex-direction: column;
+}
+#search-form {
+  /* display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center; */
+  height: 39px;
+  /* very hacky solution. need to revisit */
+}
+
+#avail-label {
+  font-size: 1rem;
+  line-height: 1.4rem;
+}
+
+/* button {
+  display: flex;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 8px 16px 8px 16px;
+  background: hsl(10, 100%, 80%);
+  border: hsl(10, 100%, 80%) 2px solid;
+  color: white;
+  cursor: pointer;
+  margin: auto;
+  width: 60%;
+} */
+
+#srch-input-div > input {
+  font-size: 1rem;
+  padding: 8px;
+  border: hsl(10, 100%, 80%) 2px solid;
+  margin: 0;
+  margin-right: 16px;
+  color: hsl(165, 100%, 15%);
+}
+
+.itm-name-col {
+  width: 25%;
+}
+.itm-avail-col {
+  width: 10%;
+}
+.itm-descr-col {
+  width: 50%;
+}
+.itm-borrow-col {
+  width: 15%;
+}
+
+h3 {
+  color: hsl(164, 50%, 90%);
+}
+
+/* INPUT VALIDATION  */
+
+/* input[type="email"]:invalid {
+  border: 2px dashed red;
+  outline: none;
+  background-color: lightpink;
+} */
+
+/* input[type="email"]:placeholder-shown {
+  border: hsl(10, 100%, 80%) 2px solid;
+  background-color: white;
+} */
+
+.invalid-input {
+  border: 2px dashed red;
+  outline: none;
+  background-color: lightpink;
+}
+
+.error {
+  width: 100%;
+  font-size: 80%;
+  color: red;
+  box-sizing: border-box;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding-bottom: 24px;
+}
+
+.passive {
+  position: absolute;
+}
+
+.incorrect-field {
+  border: solid 2px red;
+  background-color: lightpink;
+}
+
+.disclaimer {
+  font-size: 0.5rem;
+}
+
+#reg-form > span {
+  width: 0;
+}
+

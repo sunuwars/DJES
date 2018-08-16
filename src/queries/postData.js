@@ -22,55 +22,60 @@ const addLoan = (itemId, borrowerId, cb) => {
   );
 };
 
-const postData = (name, email, itemId, cb) => {
-  console.log("postData");
-  let borrowerId;
+const checkUser = (email, cb) => {
   dbConnection.query(
     `SELECT id FROM users WHERE email=$1`,
     [email],
     (err, res) => {
-      if (err) {
-        return cb(err);
-      }
-      if (res.rowCount > 0) {
-        borrowerId = res.rows[0].id;
-        addLoan(itemId, borrowerId, cb);
-      } else {
-        dbConnection.query(
-          `INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id`,
-          [name, email],
-          (err, res) => {
-            if (err) {
-              console.log(err);
-              return cb(err);
-            }
-            borrowerId = res.rows[0].id;
-            addLoan(itemId, borrowerId, cb);
-          }
-        );
-      }
+      if (err) return cb(err);
+      if (res.rowCount === 1) cb(null, true);
+      else cb(null, false);
     }
   );
 };
 
+const postData = (name, email, itemId, cb) => {
+  let borrowerId;
+  checkUser(email, (err, res) => {
+    if (err) return cb(err);
+    else if (res) {
+      borrowerId = res.rows[0].id;
+      addLoan(itemId, borrowerId, cb);
+    } else {
+      dbConnection.query(
+        `INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id`,
+        [name, email],
+        (err, res) => {
+          if (err) {
+            console.log(err);
+            return cb(err);
+          }
+          borrowerId = res.rows[0].id;
+          addLoan(itemId, borrowerId, cb);
+        }
+      );
+    }
+  });
+};
 
 const addItem = (name, description, lenderId, cb) => {
+  console.log("add item reached");
   dbConnection.query(
-    `INSERT INTO items (name, description, lender_id) VALUES ('${name}', '${description}', ${lenderId}) RETURNING id`, 
+    `INSERT INTO items (name, description, lender_id) VALUES ('${name}', '${description}', ${lenderId}) RETURNING id`,
     (err, res) => {
       if (err) {
         return cb(err);
       }
-    } 
-  )
+      return cb(null, res);
+    }
+  );
 };
 
 // Below function is for adding items (and new user if not already present)
 // WET. MAY DRY EVENTUALLY
 // params passed as arguments by handler/router
 const insertData = (name, email, itemName, itemDesc, favColour, cb) => {
-  console.log("insertData");
-  console.log(name, email, itemName, itemDesc, favColour)
+  console.log("reached insert data");
   let lenderId;
   dbConnection.query(
     `SELECT id FROM users WHERE email=$1`,
@@ -80,9 +85,11 @@ const insertData = (name, email, itemName, itemDesc, favColour, cb) => {
         return cb(err);
       }
       if (res.rowCount > 0) {
+        console.log("user exists");
         lenderId = res.rows[0].id;
         addItem(itemName, itemDesc, lenderId, cb);
       } else {
+        console.log("user doesnt exist");
         dbConnection.query(
           `INSERT INTO users (name, email, fav_colour) VALUES ($1, $2, $3) RETURNING id`,
           [name, email, favColour],
@@ -91,6 +98,7 @@ const insertData = (name, email, itemName, itemDesc, favColour, cb) => {
               return cb(err);
             }
             lenderId = res.rows[0].id;
+            console.log(lenderId);
             // Need to update these
             addItem(itemName, itemDesc, lenderId, cb);
           }
@@ -100,4 +108,4 @@ const insertData = (name, email, itemName, itemDesc, favColour, cb) => {
   );
 };
 
-module.exports = { postData, insertData };
+module.exports = { postData, checkUser, insertData };

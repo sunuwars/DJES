@@ -12,6 +12,9 @@
 </head>
 
 <body>
+  <nav>
+    <a href="/">Login</a>
+  </nav>
   <main>
     <header>
       <h1>Michael's List</h1>
@@ -21,16 +24,23 @@
     <section class="borrow-container">
       <h3>Would you like to borrow anything?</h3>
       <form id="search-form">
-        <input type="text" id="search-input" placeholder="Enter your search here..." autocomplete="off">
+        <div id="srch-input-div">
+          <input type="text" id="search-input" placeholder="Enter your search here..." autocomplete="off">
+          <label id="avail-label">
+            <input type="checkbox" id="search-avail"> available only</label>
+        </div>
         <button id="search-btn">search</button>
+
         <button id="all-items-btn">all items</button>
+
+
       </form>
       <section class="table-container">
         <table id="items-table">
-          <tr>
+          <!-- <tr>
             <th id="name-column">Item Name</th>
             <th id="desc-column">Item Description</th>
-          </tr>
+          </tr> -->
         </table>
       </section>
     </section>
@@ -46,6 +56,7 @@
       </form>
     </section>
     <section class="request-container">
+      <h3 id="borrow-item-title">Item to borrow</h3>
       <form id="request-form" class="hidden request-stuff">
         <input type="text" id="name-input" placeholder="Enter your name here..." autocomplete="off" required>
         <input type="email" id="email-input" placeholder="Enter your email here..." autocomplete="off" required>
@@ -53,6 +64,25 @@
         <button id="request-btn">request to borrow</button>
       </form>
       <div id='success'></div>
+    </section>
+    <section class="reg-container submit-item-container">
+      <h3>Sign up form</h3>
+      <form id="reg-form" class="something" method="post" action="/register">
+        <span class="error passive" aria-live="polite"></span>
+        <label for="name">Name:</label>
+        <input type="text" class="reg-form-input" name='reg-name' id="reg-name" placeholder="Enter your name" autocomplete="off" value="Dom" required>
+        <label for="email">Email:</label>
+        <input type="email" class="reg-form-input" name='reg-email' id="reg-email" placeholder="Enter your email address" autocomplete="off" required value="Dom@Dom.Dom">
+        <label for="password">Password: <p class="disclaimer">(min. 8 characters with letters and numbers)</p></label>
+        <input type="text" class="reg-form-input" name='reg-password' id="reg-password" placeholder="Enter your password here" autocomplete="off" value="Domdom123" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" />
+        <label for="confirm-password">Confirm password:</label>
+        <input type="text" class="reg-form-input" id="reg-confirm-password" placeholder="Confirm your password" autocomplete="off"
+          required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" value="Domdom123"/>
+        <label for="email">Pick your favourite colour:</label>
+        <input type="color" class="reg-form-input" name='fav-colour' id="fav-colour" placeholder="Fav colour in hex" autocomplete="off" required>
+        <button id="submit-reg" type="submit">Submit your item</button>
+      </form>
+
     </section>
   </main>
   <script type="text/javascript" src="script.js"></script>

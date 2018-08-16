@@ -11,6 +11,7 @@ var submitItemBtn = document.getElementById("submit-item");
 var allItemsBtn = document.getElementById("all-items-btn");
 var nameCol = document.getElementById("name-column");
 var descCol = document.getElementById("desc-column");
+var borrowH3 = document.getElementById("borrow-item-title");
 
 function request(url, method, cb) {
   var xhr = new XMLHttpRequest();
@@ -89,9 +90,11 @@ requestBtn.addEventListener("click", function(e) {
   xhrPost.send(JSON.stringify(postData));
 });
 
-function borrow(id) {
+function borrow(id, name) {
   reqForm.classList.remove("hidden");
   itemIdInput.value = id;
+  console.log("name: ", name);
+  borrowH3.innerText = "Borrow " + name.toLowerCase();
 }
 
 searchBtn.addEventListener("click", function(e) {
@@ -128,32 +131,50 @@ function updateDom(err, data) {
 
     //add headers
     var nameHeader = document.createElement("th");
+    var availHeader = document.createElement("th");
     var descHeader = document.createElement("th");
     var buttonHeader = document.createElement("th");
     var row = document.createElement("tr");
 
-    nameHeader.textContent = "Item Name";
-    descHeader.textContent = "Item Description";
+    nameHeader.className = "itm-name-col";
+    availHeader.className = "itm-avail-col";
+    descHeader.className = "itm-descr-col";
+    buttonHeader.className = "itm-borrow-col";
+
+    nameHeader.textContent = "Item";
+    availHeader.textContent = "Available";
+    descHeader.textContent = "Description";
     buttonHeader.textContent = "Borrow";
     row.appendChild(nameHeader);
+    row.appendChild(availHeader);
     row.appendChild(descHeader);
     row.appendChild(buttonHeader);
     table.appendChild(row);
 
     if (items.length > 0) {
       items.forEach(function(item) {
+        console.log(item);
         // adding our item names
         var row = document.createElement("tr");
         var name = document.createElement("td");
+        name.className = "itm-name-col";
+        var available = document.createElement("td");
+        available.className = "itm-avail-col";
+        available.innerHTML = item.on_loan;
         var loanBtn = document.createElement("button");
         loanBtn.textContent = "borrow";
+        loanBtn.className = "itm-borrow-col";
         loanBtn.setAttribute("id", item.id);
-        loanBtn.setAttribute("onclick", "borrow(this.id)");
+        loanBtn.setAttribute(
+          "onclick",
+          "borrow(this.id, " + "'" + item.name + "')"
+        );
         name.innerHTML = item.name;
         row.appendChild(name);
-
+        row.appendChild(available);
         // adding our item descriptions
         var description = document.createElement("td");
+        description.className = "itm-descr-col";
         description.innerHTML = item.description;
         row.appendChild(description);
         row.appendChild(loanBtn);
@@ -168,4 +189,122 @@ function updateDom(err, data) {
   }
 }
 
-request("/testing", "GET", updateDom);
+var regButton = document.getElementById("submit-reg");
+var error = document.querySelector(".error");
+var regForm = document.getElementById("reg-form");
+var regFormInput = document.querySelectorAll("reg-form-input");
+var regName = document.getElementById("reg-name");
+var regEmail = document.getElementById("reg-email");
+var password = document.getElementById("reg-password");
+var confirmPassword = document.getElementById("reg-confirm-password");
+
+regButton.addEventListener(
+  "click",
+  function(e) {
+
+    error.classList.add("passive");
+
+    // checks that a name has been entered
+    if (regName.validity.valueMissing) {
+      error.innerHTML = "Please enter a name";
+      error.className = "error";
+      regName.classList.add("incorrect-field");
+      return;
+    }
+
+    // checks that email is valid
+    if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
+      error.innerHTML = "Please enter a valid email address";
+      error.className = "error";
+      regEmail.classList.add("incorrect-field");
+      return;
+    }
+
+    // checks that anything has been entered into password fields
+    if (password.validity.valueMissing || confirmPassword.validity.valueMissing) {
+      error.innerHTML = "Please enter a password and confirm your password";
+      error.className = "error";
+      password.classList.add("incorrect-field");
+      confirmPassword.classList.add("incorrect-field");
+      return;
+    }
+
+  // checks that email is valid
+  if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
+    console.log("reached");
+    error.innerHTML = "Please enter a valid email address";
+    error.className = "error";
+    regEmail.classList.add("incorrect-field");
+    return;
+  }
+
+  // checks that anything has been entered into password fields
+  if (password.validity.valueMissing || confirmPassword.validity.valueMissing) {
+    error.innerHTML = "Please enter a password and confirm your password";
+    error.className = "error";
+    password.classList.add("incorrect-field");
+    confirmPassword.classList.add("incorrect-field");
+    return;
+  }
+
+  // check that the passwords fit the required pattern
+  if (
+    password.validity.patternMismatch ||
+    confirmPassword.validity.patternMisMatch
+  ) {
+    error.innerHTML =
+      "Password must contain at least eight characters, including one letter and one number";
+    error.className = "error";
+    password.classList.add("incorrect-field");
+    confirmPassword.classList.add("incorrect-field");
+    return;
+  }
+
+  if (password.value != confirmPassword.value) {
+    error.innerHTML = "Passwords do not match";
+    error.className = "error";
+    password.classList.add("incorrect-field");
+    confirmPassword.classList.add("incorrect-field");
+    return;
+  } else {
+    error.innerHTML = "";
+    error.classList.add("passive");
+  }
+});
+
+regForm.addEventListener(
+  "input",
+  function(e) {
+    for (let i = 0; i < regForm.length; i++) {
+      if (regForm[i].validity.valid) {
+        regForm[i].classList.remove("incorrect-field");
+      }
+    }
+  }
+);
+
+regEmail.addEventListener("focusout", function(e) {
+  if (!regEmail.validity.valid) {
+    regEmail.classList.add("invalid-input");
+  } else if (regEmail.validity.valid) {
+    regEmail.classList.remove("invalid-input");
+  }
+});
+
+password.addEventListener("focusout", function(e) {
+  if (password.validity.patternMismatch) {
+    password.classList.add("invalid-input");
+  } else if (password.validity.valid) {
+    password.classList.remove("invalid-input");
+  }
+});
+
+confirmPassword.addEventListener("focusout", function(e) {
+  if (confirmPassword.validity.patternMismatch) {
+    confirmPassword.classList.add("invalid-input");
+  } else if (confirmPassword.validity.valid) {
+    confirmPassword.classList.remove("invalid-input");
+  }
+});
+
+request("/populate-all", "GET", updateDom);
