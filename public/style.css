@@ -266,8 +266,6 @@ h3 {
   font-weight: 700;
 }
 
-
-
 #items-table > tr > button {
   display: flex;
   justify-content: center;
@@ -298,14 +296,16 @@ h3 {
   color: hsl(164, 50%, 90%);
 }
 
-#submit-item-form {
+#submit-item-form,
+#reg-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: space-between;
 }
 
-#submit-item-form > input {
+#submit-item-form > input,
+#reg-form > input {
   font-size: 1rem;
   padding: 8px;
   border: hsl(10, 100%, 80%) 2px solid;
@@ -322,7 +322,8 @@ h3 {
   width: 60%;
 }
 
-#submit-item-form > button {
+#submit-item-form > button,
+#reg-form > button {
   display: flex;
   justify-content: center;
   font-size: 1rem;
@@ -378,11 +379,12 @@ h3 {
   border: solid 6px hsl(165, 50%, 70%);
 }
 
-#checkbox, #srch-input-div{
-  display:flex;
+#checkbox,
+#srch-input-div {
+  display: flex;
   flex-direction: column;
 }
-#search-form{
+#search-form {
   /* display:flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -391,7 +393,7 @@ h3 {
   /* very hacky solution. need to revisit */
 }
 
-#avail-label{
+#avail-label {
   font-size: 1rem;
   line-height: 1.4rem;
 }
@@ -409,7 +411,6 @@ h3 {
   width: 60%;
 } */
 
-
 #srch-input-div > input {
   font-size: 1rem;
   padding: 8px;
@@ -422,16 +423,43 @@ h3 {
 .itm-name-col {
   width: 25%;
 }
-.itm-avail-col{
+.itm-avail-col {
   width: 10%;
 }
-.itm-descr-col{
+.itm-descr-col {
   width: 50%;
 }
-.itm-borrow-col{
+.itm-borrow-col {
   width: 15%;
 }
 
 h3 {
   color: hsl(164, 50%, 90%);
+}
+
+/* INPUT VALIDATION  */
+
+/* input:invalid {
+  border: 2px dashed red;
+}
+
+*/
+
+input:focus:invalid {
+  border: hsl(10, 100%, 80%) 2px solid;
+}
+
+.error {
+  width: 100%;
+  font-size: 80%;
+  color: red;
+  box-sizing: border-box;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding-bottom: 24px;
+}
+
+.passive {
+  position: absolute;
 }

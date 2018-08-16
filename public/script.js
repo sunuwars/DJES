@@ -93,9 +93,8 @@ requestBtn.addEventListener("click", function(e) {
 function borrow(id, name) {
   reqForm.classList.remove("hidden");
   itemIdInput.value = id;
-  console.log("name: ", name)
+  console.log("name: ", name);
   borrowH3.innerText = "Borrow " + name.toLowerCase();
-
 }
 
 searchBtn.addEventListener("click", function(e) {
@@ -132,15 +131,15 @@ function updateDom(err, data) {
 
     //add headers
     var nameHeader = document.createElement("th");
-    var availHeader = document.createElement('th');
+    var availHeader = document.createElement("th");
     var descHeader = document.createElement("th");
     var buttonHeader = document.createElement("th");
     var row = document.createElement("tr");
 
-    nameHeader.className = 'itm-name-col';
-    availHeader.className = 'itm-avail-col';
-    descHeader.className = 'itm-descr-col';
-    buttonHeader.className = 'itm-borrow-col';
+    nameHeader.className = "itm-name-col";
+    availHeader.className = "itm-avail-col";
+    descHeader.className = "itm-descr-col";
+    buttonHeader.className = "itm-borrow-col";
 
     nameHeader.textContent = "Item";
     availHeader.textContent = "Available";
@@ -154,25 +153,28 @@ function updateDom(err, data) {
 
     if (items.length > 0) {
       items.forEach(function(item) {
-        console.log(item)
+        console.log(item);
         // adding our item names
         var row = document.createElement("tr");
         var name = document.createElement("td");
-        name.className = 'itm-name-col';
-        var available = document.createElement('td');
-        available.className = 'itm-avail-col';
+        name.className = "itm-name-col";
+        var available = document.createElement("td");
+        available.className = "itm-avail-col";
         available.innerHTML = item.on_loan;
         var loanBtn = document.createElement("button");
         loanBtn.textContent = "borrow";
-        loanBtn.className = 'itm-borrow-col';
+        loanBtn.className = "itm-borrow-col";
         loanBtn.setAttribute("id", item.id);
-        loanBtn.setAttribute("onclick", "borrow(this.id, " + "'" + item.name + "')");
+        loanBtn.setAttribute(
+          "onclick",
+          "borrow(this.id, " + "'" + item.name + "')"
+        );
         name.innerHTML = item.name;
         row.appendChild(name);
         row.appendChild(available);
         // adding our item descriptions
         var description = document.createElement("td");
-        description.className = 'itm-descr-col';
+        description.className = "itm-descr-col";
         description.innerHTML = item.description;
         row.appendChild(description);
         row.appendChild(loanBtn);
@@ -186,5 +188,24 @@ function updateDom(err, data) {
     }
   }
 }
+
+var regButton = document.getElementById("submit-reg");
+var email = document.getElementById("reg-email");
+var error = document.querySelector(".error");
+var regForm = document.getElementById("reg-form");
+
+regButton.addEventListener("click", function(e) {
+  e.preventDefault();
+  error.classList.add = "passive";
+  for (let i = 0; i < regForm.length; i++) {
+    if (!regForm[i].validity.valid) {
+      error.innerHTML = "Some of the fields below are incorrect";
+      error.className = "error";
+      regForm[i].style.border = "solid 2px red";
+    } else {
+      regForm[i].style.border = "hsl(10, 100%, 80%) 2px solid";
+    }
+  }
+});
 
 request("/populate-all", "GET", updateDom);
