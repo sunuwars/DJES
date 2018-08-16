@@ -80,7 +80,21 @@
           required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" value="Domdom123"/>
         <label for="email">Pick your favourite colour:</label>
         <input type="color" class="reg-form-input" name='fav-colour' id="fav-colour" placeholder="Fav colour in hex" autocomplete="off" required>
-        <button id="submit-reg" type="submit">Submit your item</button>
+        <button id="submit-reg" type="submit">Register</button>
+      </form>
+
+    </section>
+
+    <section class="reg-container submit-item-container">
+      <h3>Login form</h3>
+      <form id="login-form" class="something" method="post" action="/login">
+        <span id='error1' class="error passive" aria-live="polite"></span>
+        
+        <label for="email">Email:</label>
+        <input type="email" class="reg-form-input" name='login-email' id="login-email" placeholder="Enter your email address" autocomplete="off" required >
+        <label for="password">Password: <p class="disclaimer">(min. 8 characters with letters and numbers)</p></label>
+        <input type="text" class="reg-form-input" name='login-password' id="login-password" placeholder="Enter your password here" autocomplete="off" required >
+        <button id="submit-login" type="submit">Login</button>
       </form>
 
     </section>

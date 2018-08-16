@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { postData, checkUser, insertData } = require("./queries/postData");
-const getData = require("./queries/getData");
+const {getData, getPassword} = require("./queries/getData");
 const runDbBuild = require("./database/db_build");
 const passwords = require("./passwords");
 const querystring = require("querystring");
@@ -37,18 +37,17 @@ const sessionIDGen = function(length = 24){
 const handlers = {
   collectData(req, cb) {
     let data = "";
-    console.log("req: ", req);
+   
     req
       .on("data", chunk => {
-        console.log("chunk: ", chunk);
+        
         data += chunk;
       })
       .on("error", err => {
         cb(err);
       })
       .on("end", () => {
-        cb(null, querystring.parse(data))
-        // cb(null, JSON.parse(data));
+        cb(null, queryString.parse(data));
       });
   },
 
@@ -79,6 +78,46 @@ const handlers = {
       }
     });
   },
+  login(req, res) {
+    handlers.collectData(req, (err, data) => {
+      console.log("collected data", data);
+    if (err) {
+      res.writeHead(500, { "Content-Type": "text/html" });
+      res.end("<h1>Server Error</h1>");
+    } else if(
+      !data['login-email'] ||
+      !data['login-password']
+    ) {
+        res.writeHead(500, { "Content-Type": "text/html" });
+        res.end("<h1>Server Error</h1>");
+    } else {
+      console.log('DATA=',data);
+      const email = data['login-email'].replace(/[^a-z0-9._\-@+]/gi, "");
+
+      const password = data['login-password'];
+      //write function
+      const passwordMatch = getPassword(email, (err, result) =>{ console.log('GETPASSWORD');
+        if(err){
+          res.writeHead(500, { "Content-Type": "text/html" });
+          return res.end("<h1>Server Error</h1>");
+        }
+        console.log('HERE',result);
+        passwords.comparePassword(password, result[0].password_hash, (err,res) => {
+          if(err){
+            return err;
+          }
+          console.log('RESPONSE IS=',res);
+          return res;
+        })
+
+        
+        
+      });
+      console.log('PASSWORD MATCH ', passwordMatch);
+    }
+
+    } )
+  },
 
   register(req, res) {
     if (req.method === "POST") {
@@ -93,7 +132,6 @@ const handlers = {
           !data["reg-password"] ||
           !data["fav-colour"]
         ) {
-          console.log("data missing");
           console.log("data: ", data);
           res.writeHead(500, { "Content-Type": "text/html" });
           res.end("<h1>Server Error</h1>");

@@ -17,4 +17,18 @@ const getData = (qry, cb) => {
   );
 };
 
-module.exports = getData;
+const getPassword = (qry, cb) => {
+  databaseConnection.query(
+    `SELECT password_hash FROM users WHERE email = $1`,
+    [qry], 
+    (err, res) => {
+      if (err) {
+        //console.log('DBQURERY');console.log(err);
+        return cb(err); 
+      }
+      return cb(null, res.rows);
+    }
+  )
+}
+
+module.exports = {getData, getPassword};

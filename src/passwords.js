@@ -12,6 +12,15 @@ const passwords = {
     });
   },
 
+  comparePassword: (plaintext, hash, cb) => {
+    bcrypt.compare(plaintext, hash , (err, res) => {
+      if(err){
+        return cb(err);
+      }
+      return cb(null, res);
+    })
+  },
+
   // store hash in database
   storePassword: (name, email, favColour, hashedPassword, cb) => {
     dbConnection.query(
