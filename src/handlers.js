@@ -23,8 +23,10 @@ const contentType = {
 const handlers = {
   collectData(req, cb) {
     let data = "";
+    console.log("req: ", req);
     req
       .on("data", chunk => {
+        console.log("chunk: ", chunk);
         data += chunk;
       })
       .on("error", err => {
@@ -66,6 +68,7 @@ const handlers = {
   register(req, res) {
     if (req.method === "POST") {
       handlers.collectData(req, (err, data) => {
+        console.log("collected data");
         if (err) {
           res.writeHead(500, { "Content-Type": "text/html" });
           res.end("<h1>Server Error</h1>");
@@ -75,9 +78,12 @@ const handlers = {
           !data["reg-password"] ||
           !data["fav-colour"]
         ) {
+          console.log("data missing");
+          console.log("data: ", data);
           res.writeHead(500, { "Content-Type": "text/html" });
           res.end("<h1>Server Error</h1>");
         } else {
+          console.log(data);
           // sanitise data
           const name = data["reg-name"].replace(/[^a-z0-9_\- ]/gi, "");
           const email = data["reg-email"].replace(/[^a-z0-9._\-@+]/gi, "");
