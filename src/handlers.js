@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { postData, checkUser, insertData } = require("./queries/postData");
-const getData = require("./queries/getData");
+const {getData, getPassword} = require("./queries/getData");
 const runDbBuild = require("./database/db_build");
 const passwords = require("./passwords");
 const queryString = require('querystring');
@@ -71,7 +71,39 @@ const handlers = {
     if (err) {
       res.writeHead(500, { "Content-Type": "text/html" });
       res.end("<h1>Server Error</h1>");
-    } 
+    } else if(
+      !data['login-email'] ||
+      !data['login-password']
+    ) {
+        console.log('DATA MISSING');
+        res.writeHead(500, { "Content-Type": "text/html" });
+        res.end("<h1>Server Error</h1>");
+    } else {
+      console.log('DATA=',data);
+      const email = data['login-email'].replace(/[^a-z0-9._\-@+]/gi, "");
+
+      const password = data['login-password'];
+      //write function
+      getPassword(email, (err, result) =>{ console.log('GETPASSWORD');
+        if(err){
+          res.writeHead(500, { "Content-Type": "text/html" });
+          return res.end("<h1>Server Error</h1>");
+        }
+        console.log('HERE',result);
+        console.log(result[0].password_hash);
+        passwords.comparePassword(password, result[0].password_hash, (err,res) => {
+          if(err){
+            return err;
+          }
+          console.log('RESPONSE IS=',res);
+          return res;
+        })
+
+        
+        
+      })
+    }
+
     } )
   },
 
