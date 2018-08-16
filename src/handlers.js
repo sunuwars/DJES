@@ -138,21 +138,30 @@ const handlers = {
                         passwords.storeSession(
                       sessionID,
                       email, 
-                      (err, result) => {
+                      (err, result, sssionID) => {
                         console.log("Store Session func reached")
                         if (err) {
                           res.writeHead(500, { "Content-Type": "text/html" });
                           res.end("<h1>Server Error in storeSession func</h1>");
+                        } else {
+                          res.writeHead(200, { "Content-Type": "text/html", "Set-Cookie": `session_id=${sssionID}` }) 
+                          res.end("<h1>User added to database :)</h1>")
                         }
-                      }
+                      } 
                     )}
                   )
-
+                  // .then(
+                  //   (sessID) => { 
+                  //     res.writeHead(200, { "Content-Type": "text/html", "Set-Cookie": `session_id='${sessID}'` }) 
+                  //     res.end("<h1>User added to database :)</h1>")
+                  //   } 
+                  // )
+                  // .then()
                     // create cookie
                     // store session data
                     // all that jazz
-                    res.writeHead(200, { "Content-Type": "text/html" });
-                    res.end("<h1>User added to database :)</h1>");
+                    
+                    
                   }
                 );
               });

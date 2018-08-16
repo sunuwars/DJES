@@ -33,7 +33,7 @@ const passwords = {
       [sessionID, email],
       (err, res) => {
         if(err) return cb(err);
-        return cb(null, res);
+        return cb(null, res, sessionID);
       }
     )
   }
