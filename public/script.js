@@ -198,17 +198,36 @@ var regEmail = document.getElementById("reg-email");
 var password = document.getElementById("reg-password");
 var confirmPassword = document.getElementById("reg-confirm-password");
 
-regButton.addEventListener("click", function(e) {
-  // e.preventDefault();
-  error.classList.add("passive");
+regButton.addEventListener(
+  "click",
+  function(e) {
 
-  // checks that a name has been entered
-  if (regName.validity.valueMissing) {
-    error.innerHTML = "Please enter a name";
-    error.className = "error";
-    regName.classList.add("incorrect-field");
-    return;
-  }
+    error.classList.add("passive");
+
+    // checks that a name has been entered
+    if (regName.validity.valueMissing) {
+      error.innerHTML = "Please enter a name";
+      error.className = "error";
+      regName.classList.add("incorrect-field");
+      return;
+    }
+
+    // checks that email is valid
+    if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
+      error.innerHTML = "Please enter a valid email address";
+      error.className = "error";
+      regEmail.classList.add("incorrect-field");
+      return;
+    }
+
+    // checks that anything has been entered into password fields
+    if (password.validity.valueMissing || confirmPassword.validity.valueMissing) {
+      error.innerHTML = "Please enter a password and confirm your password";
+      error.className = "error";
+      password.classList.add("incorrect-field");
+      confirmPassword.classList.add("incorrect-field");
+      return;
+    }
 
   // checks that email is valid
   if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
@@ -253,14 +272,13 @@ regButton.addEventListener("click", function(e) {
   }
 });
 
-regForm.addEventListener("input", function(e) {
-  console.log(regForm.firstChild);
-});
-
-regForm.addEventListener("input", function(e) {
-  for (let i = 0; i < regForm.length; i++) {
-    if (regForm[i].validity.valid) {
-      regForm[i].classList.remove("incorrect-field");
+regForm.addEventListener(
+  "input",
+  function(e) {
+    for (let i = 0; i < regForm.length; i++) {
+      if (regForm[i].validity.valid) {
+        regForm[i].classList.remove("incorrect-field");
+      }
     }
   }
 });
