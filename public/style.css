@@ -475,3 +475,8 @@ h3 {
   border: solid 2px red;
   background-color: lightpink;
 }
+
+.disclaimer {
+  font-size: 0.5rem;
+}
+
