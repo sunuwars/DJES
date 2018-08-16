@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS users, items, loans CASCADE;
+DROP TABLE IF EXISTS users, items, loans, active_sessions CASCADE;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -47,5 +47,14 @@ INSERT INTO loans (item_id, borrowers_id, issue_date, return_date) VALUES
     (3, 2, '2018-08-05', '2018-08-08'),
     (4, 1, '2018-08-05', '2018-08-06'),
     (4, 1, '2018-08-07', NULL);
+
+CREATE TABLE active_sessions (
+    id SERIAL PRIMARY KEY,
+    session_id VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(80) REFERENCES users(email) NOT NULL,
+    creation_date DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
+-- NEED TO INSERT DUMMY DATA INTO sessions TABLE
 
 COMMIT;
