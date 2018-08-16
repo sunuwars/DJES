@@ -144,6 +144,9 @@ const handlers = {
                     }
                   );
                 });
+              } else {
+                res.writeHead(500, { "Content-Type": "text/html" });
+                res.end("<h1>Forbidden access</h1>");
               }
             }
           );
