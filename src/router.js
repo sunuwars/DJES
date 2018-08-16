@@ -18,7 +18,10 @@ const router = (req, res) => {
     handlers.testData(req, res);
   } else if (endpoint === "success") {
     handlers.success(req, res);
-  } else {
+  } else if (endpoint === 'login'){
+    handlers.login(req, res);
+  }
+  else {
     handlers.public(req, res, endpoint);
   }
 };

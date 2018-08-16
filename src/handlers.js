@@ -4,6 +4,7 @@ const { postData, checkUser, insertData } = require("./queries/postData");
 const getData = require("./queries/getData");
 const runDbBuild = require("./database/db_build");
 const passwords = require("./passwords");
+const queryString = require('querystring');
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
@@ -23,17 +24,17 @@ const contentType = {
 const handlers = {
   collectData(req, cb) {
     let data = "";
-    console.log("req: ", req);
+   
     req
       .on("data", chunk => {
-        console.log("chunk: ", chunk);
+        
         data += chunk;
       })
       .on("error", err => {
         cb(err);
       })
       .on("end", () => {
-        cb(null, JSON.parse(data));
+        cb(null, queryString.parse(data));
       });
   },
 
@@ -63,6 +64,15 @@ const handlers = {
         res.end(file);
       }
     });
+  },
+  login(req, res) {
+    handlers.collectData(req, (err, data) => {
+      console.log("collected data", data);
+    if (err) {
+      res.writeHead(500, { "Content-Type": "text/html" });
+      res.end("<h1>Server Error</h1>");
+    } 
+    } )
   },
 
   register(req, res) {
