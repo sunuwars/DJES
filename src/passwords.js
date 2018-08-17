@@ -66,7 +66,7 @@ const passwords = {
       `SELECT session_id FROM active_sessions WHERE session_id=$1`,
       [sessionId],
       (err, res) => {
-        console.log(res);
+        console.log("session: ", res);
         if (err) return cb(err);
         return cb(null, res.rows);
       }

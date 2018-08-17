@@ -47,7 +47,7 @@ submitItemBtn.addEventListener("click", function(e) {
     setTimeout(() => {
       // horrible hacky fix for 302 redirect
       console.log("submit item by lender successful!");
-      request("/testing", "GET", updateDom);
+      request("/populate-all", "GET", updateDom);
     }, 500);
   };
 
@@ -198,36 +198,33 @@ var regEmail = document.getElementById("reg-email");
 var password = document.getElementById("reg-password");
 var confirmPassword = document.getElementById("reg-confirm-password");
 
-regButton.addEventListener(
-  "click",
-  function(e) {
+regButton.addEventListener("click", function(e) {
+  error.classList.add("passive");
 
-    error.classList.add("passive");
+  // checks that a name has been entered
+  if (regName.validity.valueMissing) {
+    error.innerHTML = "Please enter a name";
+    error.className = "error";
+    regName.classList.add("incorrect-field");
+    return;
+  }
 
-    // checks that a name has been entered
-    if (regName.validity.valueMissing) {
-      error.innerHTML = "Please enter a name";
-      error.className = "error";
-      regName.classList.add("incorrect-field");
-      return;
-    }
+  // checks that email is valid
+  if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
+    error.innerHTML = "Please enter a valid email address";
+    error.className = "error";
+    regEmail.classList.add("incorrect-field");
+    return;
+  }
 
-    // checks that email is valid
-    if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
-      error.innerHTML = "Please enter a valid email address";
-      error.className = "error";
-      regEmail.classList.add("incorrect-field");
-      return;
-    }
-
-    // checks that anything has been entered into password fields
-    if (password.validity.valueMissing || confirmPassword.validity.valueMissing) {
-      error.innerHTML = "Please enter a password and confirm your password";
-      error.className = "error";
-      password.classList.add("incorrect-field");
-      confirmPassword.classList.add("incorrect-field");
-      return;
-    }
+  // checks that anything has been entered into password fields
+  if (password.validity.valueMissing || confirmPassword.validity.valueMissing) {
+    error.innerHTML = "Please enter a password and confirm your password";
+    error.className = "error";
+    password.classList.add("incorrect-field");
+    confirmPassword.classList.add("incorrect-field");
+    return;
+  }
 
   // checks that email is valid
   if (regEmail.validity.typeMismatch || regEmail.validity.valueMissing) {
@@ -272,16 +269,13 @@ regButton.addEventListener(
   }
 });
 
-regForm.addEventListener(
-  "input",
-  function(e) {
-    for (let i = 0; i < regForm.length; i++) {
-      if (regForm[i].validity.valid) {
-        regForm[i].classList.remove("incorrect-field");
-      }
+regForm.addEventListener("input", function(e) {
+  for (let i = 0; i < regForm.length; i++) {
+    if (regForm[i].validity.valid) {
+      regForm[i].classList.remove("incorrect-field");
     }
   }
-);
+});
 
 regEmail.addEventListener("focusout", function(e) {
   if (!regEmail.validity.valid) {
@@ -307,24 +301,23 @@ confirmPassword.addEventListener("focusout", function(e) {
   }
 });
 
-const submitLogin = document.getElementById('submit-login');
-const emailLogin = document.getElementById('login-email');
-const psdLogin = document.getElementById('login-password');
-const error1 = document.getElementById('error1');
+const submitLogin = document.getElementById("submit-login");
+const emailLogin = document.getElementById("login-email");
+const psdLogin = document.getElementById("login-password");
+const error1 = document.getElementById("error1");
 
 emailLogin.addEventListener("focusout", function(e) {
-  console.log('HERE')
-  if (!emailLogin.validity.valid) { //console.log('email=',emailLogin.value);console.log('here')
+  console.log("HERE");
+  if (!emailLogin.validity.valid) {
+    //console.log('email=',emailLogin.value);console.log('here')
     error1.innerHTML = "Please enter a valid email address";
     error1.className = "error";
-  document.getElementById('login-email').classList.add("invalid-input");
-  console.log(emailLogin.classList)
+    document.getElementById("login-email").classList.add("invalid-input");
+    console.log(emailLogin.classList);
   } else if (emailLogin.validity.valid) {
     emailLogin.classList.remove("invalid-input");
     error1.classList.remove("error");
-
   }
 });
-
 
 request("/populate-all", "GET", updateDom);
