@@ -75,8 +75,7 @@ const addItem = (name, description, lenderId, cb) => {
 // Below function is for adding items (and new user if not already present)
 // WET. MAY DRY EVENTUALLY
 // params passed as arguments by handler/router
-const insertData = (name, email, itemName, itemDesc, favColour, cb) => {
-  console.log("reached insert data");
+const insertData = (email, itemName, itemDesc, cb) => {
   let lenderId;
   dbConnection.query(
     `SELECT id FROM users WHERE email=$1`,
@@ -86,21 +85,17 @@ const insertData = (name, email, itemName, itemDesc, favColour, cb) => {
         return cb(err);
       }
       if (res.rowCount > 0) {
-        console.log("user exists");
         lenderId = res.rows[0].id;
         addItem(itemName, itemDesc, lenderId, cb);
       } else {
-        console.log("user doesnt exist");
         dbConnection.query(
-          `INSERT INTO users (name, email, fav_colour) VALUES ($1, $2, $3) RETURNING id`,
-          [name, email, favColour],
+          `INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id`,
+          [name, email],
           (err, res) => {
             if (err) {
               return cb(err);
             }
             lenderId = res.rows[0].id;
-            console.log(lenderId);
-            // Need to update these
             addItem(itemName, itemDesc, lenderId, cb);
           }
         );

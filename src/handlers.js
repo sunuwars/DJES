@@ -67,7 +67,9 @@ const handlers = {
   },
 
   home(req, res) {
+    console.log("home reached");
     if (req.headers.cookie) {
+      console.log("checking cookie");
       const sessionId = req.headers.cookie.split("=")[1];
       passwords.checkSession(sessionId, (err, rows) => {
         if (err) {
@@ -77,12 +79,15 @@ const handlers = {
           res.writeHead(401, { "Content-Type": "text/html" });
           res.end("<h1>Forbidden Access</h1>");
         } else {
+          console.log("cookie valid");
           fs.readFile(buildPath("index-loggedin.html"), (err, file) => {
+            console.log("reading logged in html file");
             if (err) {
               res.writeHead(500, { "Content-Type": "text/html" });
               res.end("<h1>Server Error</h1>");
               console.log("home error");
             } else {
+              console.log("returning logged in html file");
               res.writeHead(200, { "Content-Type": "text/html" });
               res.end(file);
             }
@@ -104,6 +109,7 @@ const handlers = {
   },
 
   public(req, res, endpoint) {
+    console.log("endpoint: ", endpoint);
     fs.readFile(buildPath(endpoint), (err, file) => {
       if (err) {
         res.writeHead(404, { "Content-Type": "text/html" });
@@ -152,7 +158,7 @@ const handlers = {
                         res.end("<h1>Server Error in storeSession func</h1>");
                       } else {
                         res.writeHead(302, {
-                          "Location": "/",
+                          Location: "/",
                           "Set-Cookie": `session_id=${sssionID}; HttpOnly; Max-Age=43200`
                         });
                         res.end();
@@ -222,23 +228,28 @@ const handlers = {
                     }
 
                     // Create session token!
-                    sessionIDGen()
-                    .then(
-                      sessionID => {
-                        passwords.storeSession(
-                      sessionID,
-                      email, 
-                      (err, result, sssionID) => {
-                        console.log("Store Session func reached")
-                        if (err) {console.log('HERE');
-                          console.log(err);
-                          res.writeHead(500, { "Content-Type": "text/html" });
-                          res.end("<h1>Server Error in storeSession func</h1>");
-                        } else {
-                          res.writeHead(302, { Location: "/","Content-Type": "text/html", "Set-Cookie": `session_id=${sssionID}; HttpOnly; Max-Age=43200` }) 
-                          res.end()
+                    sessionIDGen().then(sessionID => {
+                      passwords.storeSession(
+                        sessionID,
+                        email,
+                        (err, result, sssionID) => {
+                          console.log("Store Session func reached");
+                          if (err) {
+                            console.log("HERE");
+                            console.log(err);
+                            res.writeHead(500, { "Content-Type": "text/html" });
+                            res.end(
+                              "<h1>Server Error in storeSession func</h1>"
+                            );
+                          } else {
+                            res.writeHead(302, {
+                              Location: "/",
+                              "Content-Type": "text/html",
+                              "Set-Cookie": `session_id=${sssionID}; HttpOnly; Max-Age=43200`
+                            });
+                            res.end();
+                          }
                         }
-                      }
                       );
                     });
                     // .then(
@@ -320,35 +331,47 @@ const handlers = {
     // SQL query: Add item from that user
     console.log("addItem reached");
     if (req.method === "POST") {
-      let data = "";
-      req
-        .on("data", chunk => {
-          data += chunk;
-        })
-        .on("end", () => {
-          const parsedData = JSON.parse(data);
-          console.log("got data");
-          // Previously used parsedData.data.name etc below
-          insertData(
-            parsedData.name,
-            parsedData.email,
-            parsedData.itemName,
-            parsedData.itemDesc,
-            parsedData.favColour,
-            err => {
-              if (err) {
-                res.writeHead(500, { "Content-Type": "text/html" });
-                res.end("<h1>Server Error</h1>");
-                console.log("insertdata error");
-              } else {
-                //need to change location?
-                console.log("else, should be 302");
-                res.writeHead(302, { Location: "/success" });
-                res.end();
-              }
-            }
-          );
+      if (req.headers.cookie) {
+        const sessionId = req.headers.cookie.split("=")[1];
+        console.log(sessionId);
+        passwords.checkSession(sessionId, (err, rows) => {
+          if (err) {
+            res.writeHead(500, { "Content-Type": "text/html" });
+            res.end("<h1>Server Error</h1>");
+          } else if (rows.length !== 1) {
+            res.writeHead(401, { "Content-Type": "text/html" });
+            res.end("<h1>401 Forbidden</h1>");
+          } else {
+            const email = rows[0].email;
+            let data = "";
+            req
+              .on("data", chunk => {
+                data += chunk;
+              })
+              .on("end", () => {
+                const parsedData = JSON.parse(data);
+                insertData(
+                  email,
+                  parsedData.itemName,
+                  parsedData.itemDesc,
+                  err => {
+                    if (err) {
+                      res.writeHead(500, { "Content-Type": "text/html" });
+                      res.end("<h1>Server Error</h1>");
+                    } else {
+                      res.writeHead(302, { Location: "/" });
+                      res.end();
+                    }
+                  }
+                );
+              });
+          }
         });
+      } else {
+        console.log("no cookie");
+        res.writeHead(401, { "Content-Type": "text/html" });
+        res.end("<h1>401 Forbidden</h1>");
+      }
     }
   },
 
@@ -368,7 +391,7 @@ const handlers = {
     //     console.log(err);
     //   } else {
     getData("", (err, res) => {
-      console.log("reached again")
+      console.log("reached again");
       if (err) {
         response.writeHead(500, "Content-Type:text/html");
         response.end("<h1>Sorry, there was a problem getting the users</h1>");

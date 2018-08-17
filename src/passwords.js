@@ -63,10 +63,11 @@ const passwords = {
 
   checkSession: (sessionId, cb) => {
     dbConnection.query(
-      `SELECT session_id FROM active_sessions WHERE session_id=$1`,
+      `SELECT email FROM active_sessions WHERE session_id=$1`,
       [sessionId],
       (err, res) => {
-        console.log(res);
+        console.log("session id: ", sessionId);
+        console.log("email1: ", res);
         if (err) return cb(err);
         return cb(null, res.rows);
       }

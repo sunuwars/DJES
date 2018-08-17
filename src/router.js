@@ -13,13 +13,14 @@ const router = (req, res) => {
   } else if (endpoint === "request-item") {
     handlers.requestItem(req, res);
   } else if (endpoint === "add-item") {
+    console.log("add-item");
     handlers.addItem(req, res, endpoint); // some arguments
   } else if (endpoint === "populate-all") {
-    console.log('populate')
+    console.log("populate");
     handlers.testData(req, res);
   } else if (endpoint === "success") {
     handlers.success(req, res);
-  } else if (endpoint === 'login'){
+  } else if (endpoint === "login") {
     handlers.login(req, res);
   }
   else if (endpoint === 'logout') {
