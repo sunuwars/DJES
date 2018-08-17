@@ -33,8 +33,8 @@
 
         <button id="all-items-btn">all items</button>
 
-
       </form>
+      <div id='success'></div>
       <section class="table-container">
         <table id="items-table">
           <!-- <tr>
@@ -55,7 +55,7 @@
         <button id="submit-item" type="submit">Submit your item</button>
       </form>
     </section>
-    <section class="request-container">
+    <!-- <section class="request-container">
       <h3 id="borrow-item-title">Item to borrow</h3>
       <form id="request-form" class="hidden request-stuff">
         <input type="text" id="name-input" placeholder="Enter your name here..." autocomplete="off" required>
@@ -64,7 +64,7 @@
         <button id="request-btn">request to borrow</button>
       </form>
       <div id='success'></div>
-    </section>
+    </section> -->
   </main>
   <script type="text/javascript" src="script.js"></script>
   <script>request("/populate-all", "GET", updateDom);</script>
