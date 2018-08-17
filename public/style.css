@@ -332,8 +332,19 @@ header > h3 {
   border: hsl(10, 100%, 80%) 2px solid;
   margin: 0;
   margin: auto;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   color: hsl(165, 100%, 15%);
+}
+
+.reg-form-input {
+  width: 80%;
+}
+
+#reg-form > label,
+#login-form > label {
+  width: 80%;
+  margin: auto;
+  padding-bottom: 8px;
 }
 
 #lender-email,
