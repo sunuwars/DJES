@@ -54,7 +54,7 @@ Functionality we are close to completing:
 + [ ] Username is visible on each page of the site after logging in
 + [x] Any user-submitted content should be labelled with the authors username *all items listed and borrowed is linked with that user's id*
 + [x] There should be protected routes and unprotected routes that depend on the user having a cookie or not (or what level of access they have).
-+ [ ] Website content should be stored in a database
++ [x] Website content should be stored in a database
 
 ### Some of the challenges we faced (and you'll no doubt see!)
 
