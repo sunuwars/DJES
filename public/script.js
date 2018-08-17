@@ -63,16 +63,43 @@ submitItemBtn.addEventListener("click", function(e) {
   xhrPost.send(JSON.stringify(postData));
 });
 
-requestBtn.addEventListener("click", function(e) {
-  e.preventDefault();
-  var name = borrowerName.value;
-  var email = borrowerEmail.value;
-  var id = itemIdInput.value;
+// requestBtn.addEventListener("click", function(e) {
+//   e.preventDefault();
+//   var name = borrowerName.value;
+//   var email = borrowerEmail.value;
+//   var id = itemIdInput.value;
+//   var xhrPost = new XMLHttpRequest();
+//   xhrPost.onreadystatechange = function() {
+//     if (xhrPost.readyState === 4 && xhrPost.status === 200) {
+//       console.log("post data response successful");
+//       reqForm.classList.add("hidden");
+//       var success = document.createElement("div");
+//       success.innerText = "Loan requested! :)";
+//       successDiv.appendChild(success);
+//     } else {
+//       // cb("error" + xhrPost.responseType);
+//     }
+//   };
+//   xhrPost.open("POST", "/request-item", true);
+//   xhrPost.setRequestHeader("content-type", "application/json");
+//   var postData = {
+//     name: name,
+//     email: email,
+//     item: id
+//   };
+//   xhrPost.send(JSON.stringify(postData));
+// });
+
+function borrow(id, name) {
+  // reqForm.classList.remove("hidden");
+  // itemIdInput.value = id;
+  // console.log("name: ", name);
+  // borrowH3.innerText = "Borrow " + name.toLowerCase();
+  console.log(id, name);
   var xhrPost = new XMLHttpRequest();
   xhrPost.onreadystatechange = function() {
     if (xhrPost.readyState === 4 && xhrPost.status === 200) {
-      console.log("post data response successful");
-      reqForm.classList.add("hidden");
+      console.log("borrow data response successful");
       var success = document.createElement("div");
       success.innerText = "Loan requested! :)";
       successDiv.appendChild(success);
@@ -83,18 +110,16 @@ requestBtn.addEventListener("click", function(e) {
   xhrPost.open("POST", "/request-item", true);
   xhrPost.setRequestHeader("content-type", "application/json");
   var postData = {
-    name: name,
-    email: email,
     item: id
   };
   xhrPost.send(JSON.stringify(postData));
-});
 
-function borrow(id, name) {
-  reqForm.classList.remove("hidden");
-  itemIdInput.value = id;
-  console.log("name: ", name);
-  borrowH3.innerText = "Borrow " + name.toLowerCase();
+  // look at their cookie 
+  // validate cookie
+  // get their email (for query)
+  // we automatically have item id
+  // look up borrowers id using their email
+
 }
 
 searchBtn.addEventListener("click", function(e) {

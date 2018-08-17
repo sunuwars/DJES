@@ -6,6 +6,7 @@ const runDbBuild = require("./database/db_build");
 const passwords = require("./passwords");
 const querystring = require("querystring");
 const crypto = require("crypto");
+const cookies = require("./cookies");
 
 const buildPath = function(myPath) {
   return path.join(__dirname, "..", "public", myPath);
@@ -47,6 +48,21 @@ const handlers = {
       })
       .on("end", () => {
         cb(null, querystring.parse(data));
+      });
+  },
+
+  collectJSON(req, cb) {
+    let data = "";
+
+    req
+      .on("data", chunk => {
+        data += chunk;
+      })
+      .on("error", err => {
+        cb(err);
+      })
+      .on("end", () => {
+        cb(null, JSON.parse(data));
       });
   },
 
@@ -264,23 +280,26 @@ const handlers = {
   },
   requestItem(req, res) {
     if (req.method === "POST") {
-      handlers.collectData(req, (err, data) => {
-        const parsedData = JSON.parse(data);
-        postData(
-          parsedData.name,
-          parsedData.email,
-          Number(parsedData.item),
-          err => {
-            if (err) {
-              res.writeHead(500, { "Content-Type": "text/html" });
-              res.end("<h1>Server Error</h1>");
-              console.log("postdata error");
-            } else {
-              res.writeHead(302, { Location: "/success" });
-              res.end();
+      handlers.collectJSON(req, (err, parsedData) => {
+        cookies.getUserDetails(req, (err, result) => {
+          console.log('results are in: ', result);
+          postData(
+            result.name,
+            result.email,
+            Number(parsedData.item),
+            err => {
+              if (err) {
+                res.writeHead(500, { "Content-Type": "text/html" });
+                res.end("<h1>Server Error</h1>");
+                console.log("postdata error");
+              } else {
+                res.writeHead(302, { Location: "/success" });
+                res.end();
+              }
             }
-          }
-        );
+          );
+        })
+        
       });
     }
   },

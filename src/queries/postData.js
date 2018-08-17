@@ -27,8 +27,9 @@ const checkUser = (email, cb) => {
     `SELECT id FROM users WHERE email=$1`,
     [email],
     (err, res) => {
+      console.log('checkUser result: ', res);
       if (err) return cb(err);
-      if (res.rowCount === 1) cb(null, true);
+      if (res.rowCount === 1) cb(null, res);
       else cb(null, false);
     }
   );
