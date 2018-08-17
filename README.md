@@ -5,6 +5,8 @@ https://desolate-lake-72795.herokuapp.com/
 
 You are  able to register as a new user. This will then automatically log you in and give you access to seeing which items you can lend and borrow.
 
+We've given you (aka forgotten to remove) placeholder values for the registration making it super easy for you to register as a new user (well one of you anyway, because we do check for existing email address :) ), but definitely go ahead and delete them and test our our client side validation :)
+
 In order to log in as an existing user, you can use:
 sangita@gmail.com
 password123
