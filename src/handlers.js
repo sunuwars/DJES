@@ -312,36 +312,47 @@ const handlers = {
     // SQL query: Add item from that user
     console.log("addItem reached");
     if (req.method === "POST") {
-      let data = "";
-      req
-        .on("data", chunk => {
-          data += chunk;
-        })
-        .on("end", () => {
-          const parsedData = JSON.parse(data);
-          console.log("got data");
-          console.log("data: ", parsedData);
-          // Previously used parsedData.data.name etc below
-          insertData(
-            parsedData.name,
-            parsedData.email,
-            parsedData.itemName,
-            parsedData.itemDesc,
-            parsedData.favColour,
-            err => {
-              if (err) {
-                res.writeHead(500, { "Content-Type": "text/html" });
-                res.end("<h1>Server Error</h1>");
-                console.log("insertdata error");
-              } else {
-                //need to change location?
-                console.log("else, should be 302");
-                res.writeHead(302, { Location: "/" });
-                res.end();
-              }
-            }
-          );
+      if (req.headers.cookie) {
+        const sessionId = req.headers.cookie.split("=")[1];
+        console.log(sessionId);
+        passwords.checkSession(sessionId, (err, rows) => {
+          if (err) {
+            res.writeHead(500, { "Content-Type": "text/html" });
+            res.end("<h1>Server Error</h1>");
+          } else if (rows.length !== 1) {
+            res.writeHead(401, { "Content-Type": "text/html" });
+            res.end("<h1>401 Forbidden</h1>");
+          } else {
+            const email = rows[0].email;
+            let data = "";
+            req
+              .on("data", chunk => {
+                data += chunk;
+              })
+              .on("end", () => {
+                const parsedData = JSON.parse(data);
+                insertData(
+                  email,
+                  parsedData.itemName,
+                  parsedData.itemDesc,
+                  err => {
+                    if (err) {
+                      res.writeHead(500, { "Content-Type": "text/html" });
+                      res.end("<h1>Server Error</h1>");
+                    } else {
+                      res.writeHead(302, { Location: "/" });
+                      res.end();
+                    }
+                  }
+                );
+              });
+          }
         });
+      } else {
+        console.log("no cookie");
+        res.writeHead(401, { "Content-Type": "text/html" });
+        res.end("<h1>401 Forbidden</h1>");
+      }
     }
   },
 

@@ -35,11 +35,8 @@ function clearList(list) {
 
 submitItemBtn.addEventListener("click", function(e) {
   e.preventDefault();
-  var name = document.getElementById("lender-name").value;
-  var email = document.getElementById("lender-email").value;
   var itemName = document.getElementById("item-name").value;
   var itemDesc = document.getElementById("item-desc").value;
-  var favColour = document.getElementById("fav-colour").value;
 
   var xhrPost = new XMLHttpRequest();
 
@@ -54,11 +51,8 @@ submitItemBtn.addEventListener("click", function(e) {
   xhrPost.open("POST", "/add-item", true);
   xhrPost.setRequestHeader("content-type", "application/json");
   var postData = {
-    name,
-    email,
     itemName,
-    itemDesc,
-    favColour: favColour.replace("#", "")
+    itemDesc
   };
   xhrPost.send(JSON.stringify(postData));
 });
