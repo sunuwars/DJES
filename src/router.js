@@ -22,6 +22,9 @@ const router = (req, res) => {
   } else if (endpoint === 'login'){
     handlers.login(req, res);
   }
+  else if (endpoint === 'logout') {
+    handlers.logout(req, res);
+  } 
   else {
     handlers.public(req, res, endpoint);
   }

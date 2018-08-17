@@ -352,6 +352,14 @@ const handlers = {
     }
   },
 
+  logout(req, response) {
+    response.writeHead(302, {
+    'Location': '/',
+    'Set-Cookie': 'session_id=false; HttpOnly; Max-Age=0'
+    });
+    response.end();
+  },
+
   testData(req, response) {
     // runDbBuild((err, res) => {
     //   if (err) {
