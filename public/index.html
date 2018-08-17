@@ -27,14 +27,14 @@
       <form id="reg-form" class="something" method="post" action="/register">
         <span class="error passive" aria-live="polite"></span>
         <label for="name">Name:</label>
-        <input type="text" class="reg-form-input" name='reg-name' id="reg-name" placeholder="Enter your name" autocomplete="off" value="Dom" required>
+        <input type="text" class="reg-form-input" name='reg-name' id="reg-name" placeholder="Enter your name" autocomplete="off" required>
         <label for="email">Email:</label>
-        <input type="email" class="reg-form-input" name='reg-email' id="reg-email" placeholder="Enter your email address" autocomplete="off" required value="Dom@Dom.Dom">
+        <input type="email" class="reg-form-input" name='reg-email' id="reg-email" placeholder="Enter your email address" autocomplete="off" required >
         <label for="password">Password: <p class="disclaimer">(min. 8 characters with letters and numbers)</p></label>
-        <input type="text" class="reg-form-input" name='reg-password' id="reg-password" placeholder="Enter your password here" autocomplete="off" value="Domdom123" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" />
+        <input type="password" class="reg-form-input" name='reg-password' id="reg-password" placeholder="Enter your password here" autocomplete="off" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" />
         <label for="confirm-password">Confirm password:</label>
-        <input type="text" class="reg-form-input" id="reg-confirm-password" placeholder="Confirm your password" autocomplete="off"
-          required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" value="Domdom123"/>
+        <input type="password" class="reg-form-input" id="reg-confirm-password" placeholder="Confirm your password" autocomplete="off"
+          required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" />
         <label for="email">Pick your favourite colour:</label>
         <input type="color" class="reg-form-input" name='fav-colour' id="fav-colour" placeholder="Fav colour in hex" autocomplete="off" required>
         <button id="submit-reg" type="submit">Register</button>
