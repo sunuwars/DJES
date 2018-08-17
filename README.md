@@ -12,6 +12,8 @@ In order to log in as an existing user, you can use:
 sangita@gmail.com
 password123
 
+*Logging in for some reason is causing our Heroku version to crash, but it does work if you run it locally!*
+
 ## How to set up and see the magic
 1. Clone repo (make sure it's this FAC-14 one, not the Sunuwars one that we've forked!)
 2. Run `psql` or `pgcli` on your command line
